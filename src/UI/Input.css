@@ -1,0 +1,29 @@
+.input{
+    display: flex;
+    width:50%;
+    align-items: center;
+    justify-content: right;
+    margin-bottom: 30px;
+    margin-left: -100px;
+}
+label{
+    position: relative;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+}
+input{
+    position: relative;
+    width: 80%;
+    height: 30px;
+    margin-left: 30px;
+    /* margin-right: 40px; */
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input:focus{
+    border: 2px solid black;
+}

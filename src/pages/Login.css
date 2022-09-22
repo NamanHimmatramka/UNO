@@ -1,0 +1,15 @@
+.login{
+    background-image: url('../assets/backgrounds/bgB.png');
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo{
+    margin-top: -50px;
+    width: 300px;
+    height: 300px;
+    transform: rotate(18.5deg);
+}
