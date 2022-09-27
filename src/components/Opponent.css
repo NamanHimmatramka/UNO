@@ -1,0 +1,34 @@
+.opponent{
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.opponent .user{
+    background-color: white;
+    border-radius: 30px;
+    height: 45px;
+    width: 17rem;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.opponent .user img{
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+}
+.opponent .trophy-div{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.opponent .trophy{
+    width: 30px;
+    height: 30px;
+    margin-left: 40px;
+    object-fit: cover;
+}

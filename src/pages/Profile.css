@@ -1,0 +1,82 @@
+.profile {
+  background-image: url("../assets/backgrounds/bgR.png");
+  background-size: cover;
+  /* width: 100vw; */
+  height: 100vh;
+  display: flex;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  /* flex-direction: column; */
+  /* align-items: center; */
+}
+
+.profile .left{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+.profile .left .profile-section{
+    display: flex;
+
+}
+.profile .left .profile-background{
+    width: 200px;
+    height: 200px;
+    /* background-color: white; */
+    margin-left: 4rem;
+    /* border: 2px solid black; */
+    border-radius: 200px;
+}
+
+.profile .left .profile-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    font-family: "Paytone One";
+}
+.profile .left .profile-info .name{
+    margin-bottom: 0;
+}
+.profile .left .profile-info .rank{
+    margin-top: 1rem;
+}
+.profile .left .profile-info .flag{
+    height: 30px;
+    width: 30px;
+    border-radius: 20px;
+}
+.profile .left .icons {
+    display: flex;
+    margin-top: 7rem;
+    margin-left: 6rem;
+}
+.profile .left .icons .leaderboard{
+    width: 60px;
+    height: 60px;
+    margin-right: 2rem;
+}
+.profile .left .icons .home-icon{
+    width: 60px;
+    height: 60px;
+}
+.profile .right{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    padding-top: 4rem;
+    padding-left: 15rem;
+}
+.profile .right .games-info{
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 50px;
+    /* row-gap: 20px; */
+}
+.profile .logoProfile{
+    margin-top: -40px;
+    width: 200px;
+    height: 200px;
+    transform: rotate(18.5deg);
+}
