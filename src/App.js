@@ -1,3 +1,4 @@
+import Game from "./pages/Game";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
@@ -7,7 +8,8 @@ function App() {
     // <Register/>
     // <Login/>
     // <Home/>
-    <Profile/>
+    // <Profile/>
+    <Game/>
   );
 }
 

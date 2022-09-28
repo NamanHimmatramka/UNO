@@ -1,0 +1,102 @@
+.game {
+  background-image: url("../assets/backgrounds/bgG.png");
+  background-size: cover;
+  /* width: 100vw; */
+  height: 100vh;
+  /* display: flex; */
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-weight: 700;
+}
+
+.game .top-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 60px;
+  height: 80px;
+}
+.game .top-info h1 {
+  /* margin: 0; */
+  margin-left: 30rem;
+  color: white;
+}
+.game .logogame {
+  width: 150px;
+  height: 150px;
+
+  /* transform: rotate(18.5deg); */
+}
+
+.game .player1deck {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-right: 2rem;
+}
+.game .player1deck .card-back {
+  width: 6rem;
+  height: 9rem;
+  margin: 0.1rem;
+  transition: transform 350ms;
+}
+
+.game .player1deck img:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.game .player1deck h1 {
+  color: white;
+  margin-right: 1rem;
+}
+.game .middle-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.game .middle-info .draw-card {
+  background-color: #3278e1;
+  width: 100px;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 10px;
+  color: white;
+  margin-right: 7rem;
+}
+.game .middle-info .card-middle {
+  width: 6rem;
+  height: 9rem;
+}
+
+.game .middle-info .uno {
+  background-color: #b2a20d;
+  width: 70px;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 10px;
+  color: white;
+  margin-left: 7rem;
+}
+
+.game .player2deck {
+  margin-left: 4rem;
+  display: flex;
+  align-items: center;
+  transition: transform 350ms;
+}
+.game .player2deck h1{
+    color: white;
+    margin-left: 1rem;
+}
+.game .player2deck .card-front {
+  width: 6rem;
+  height: 9rem;
+  margin: 0.1rem;
+  transition: transform 350ms;
+}
+.game .player2deck img:hover {
+    transform: scale(1.08);
+    opacity: 1;
+  }
