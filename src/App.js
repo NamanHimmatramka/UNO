@@ -13,6 +13,5 @@ function App() {
   );
 }
 
-//Vatsal Gohil
 
 export default App;
