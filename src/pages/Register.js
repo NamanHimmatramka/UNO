@@ -55,12 +55,14 @@ const Register = () => {
           validators={[VALIDATOR_MINLENGTH(5)]}
           row
         />
-        {/* <Input
+        <Input
           row
           type="password"
           name="CONFIRM PASSWORD"
           placeholder="********"
-        /> */}
+          onInput={inputHandler}
+          validators={[VALIDATOR_MINLENGTH(5)]}
+        />
         <button className="register-btn">REGISTER</button>
       </form>
       {/* </Card> */}
