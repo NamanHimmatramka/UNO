@@ -4,6 +4,7 @@ import logo from "../assets/logo.png";
 import Input from "../UI/Input";
 import { useForm } from "../hooks/form-hook";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../utils/validators";
+import axios from "axios";
 
 const Register = () => {
   const [formState, inputHandler] = useForm({
@@ -22,6 +23,17 @@ const Register = () => {
   });
   const onSubmitHandler = (event) => {
     event.preventDefault();
+    console.log("Submit")
+    console.log(formState)
+    axios.post('/user/register', formState)
+    .then((res)=>{
+      console.log('Submitted')
+      console.log(res)
+    })
+    .catch((err)=>{
+      console.log('ERR')
+      console.log(err);
+    })
   };
   return (
     <div className="register">

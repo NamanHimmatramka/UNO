@@ -5,11 +5,11 @@ import Profile from "./pages/Profile";
 import Register from "./pages/Register";
 function App() {
   return (
-    // <Register/>
+    <Register/>
     // <Login/>
     // <Home/>
     // <Profile/>
-    <Game/>
+    // <Game/>
   );
 }
 
