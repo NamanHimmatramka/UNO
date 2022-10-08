@@ -8,14 +8,15 @@ router.get('/protected', passport.authenticate('jwt', {session: false}), (req,re
 })
 
 router.post('/login', (req,res)=>{
-    User.findOne({userName: req.body.userName})
+    console.log(req.body.inputs)
+    User.findOne({userName: req.body.inputs.email.value})
     .then((user)=>{
         if(!user){
             res.json({success: false, msg: "User Not Registered"})
         }
         else{
             const hash = user.password
-            Utils.validPassword(hash, req.body.password)
+            Utils.validPassword(hash, req.body.inputs.password.value)
             .then((isValid)=>{
                 if(isValid){
                     const newToken = Utils.issueJWT(user)

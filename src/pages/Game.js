@@ -9,12 +9,16 @@ import R2 from "../assets/cards-front/2R.png";
 import D2Y from "../assets/cards-front/D2Y.png";
 import D4W from "../assets/cards-front/D4W.png";
 import Chat from "../components/Chat";
-const Game = () => {
+
+// import queryString from 'query-string';
+import randomCodeGenerator from '../utils/randomCodeGenerator'
+const Game = (props) => {
+  // const data = queryString.parse(props.location.search)
   return (
     <div className="game">
       <div className="top-info">
         <img src={Logo} alt="" className="logogame" />
-        <h1>Game Code:Qtksp</h1>
+        <h1>Game Code:{randomCodeGenerator(5)}</h1>
       </div>
       <div>
         <div className="player1deck">
