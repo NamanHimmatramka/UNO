@@ -8,9 +8,24 @@ import Opponent from "../components/Opponent";
 import India from "../assets/flags/india.png";
 import leaderboard from "../assets/Leaderboard.png";
 import home from "../assets/home.png"
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 const Profile = () => {
+  let navigate = useNavigate()
+  useEffect(()=>{
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:3001/protected', {headers: {
+      Authorization: token
+    }}).then((res)=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+      navigate('/')
+    })
+  })
   return (
     <div className="profile">
       <div className="left">

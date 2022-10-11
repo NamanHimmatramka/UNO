@@ -4,8 +4,22 @@ import Input from "../UI/Input";
 import {useForm} from "../hooks/form-hook"
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../utils/validators";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Login = () => {
+  let navigate = useNavigate()
+  useEffect(()=>{
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:3001/protected', {headers: {
+      Authorization: token
+    }}).then((res)=>{
+      console.log(res)
+      navigate('/home')
+    }).catch(err=>{
+      console.log(err)
+    })
+  })
   const [formState, inputHandler] = useForm({
     email: {
       value: "",
@@ -24,6 +38,8 @@ const Login = () => {
     .then((res)=>{
       console.log('Submitted')
       console.log(res)
+      localStorage.setItem('token', res.data.token)
+      navigate('/home')
     })
     .catch((err)=>{
       console.log('ERR')
@@ -55,7 +71,7 @@ const Login = () => {
       <a href="" className="forgot">
         Forgot Password?
       </a>
-      <a href="" className="new-user">
+      <a href="/register" className="new-user">
         New User? Register Here
       </a>
       <button className="login-btn">LOGIN</button>

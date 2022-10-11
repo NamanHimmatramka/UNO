@@ -12,6 +12,17 @@ const userSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true
+    },
+    noOfGames:{
+        type: Number,
+        default: 0
+    },
+    wins:{
+        type: Number,
+        default: 0
+    },
+    displayPicture:{
+        type: String,
     }
 })
 

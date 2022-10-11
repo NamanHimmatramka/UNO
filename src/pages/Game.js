@@ -9,6 +9,9 @@ import R2 from "../assets/cards-front/2R.png";
 import D2Y from "../assets/cards-front/D2Y.png";
 import D4W from "../assets/cards-front/D4W.png";
 import Chat from "../components/Chat";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 // import queryString from 'query-string';
 import randomCodeGenerator from "../utils/randomCodeGenerator";
 import { useEffect } from "react";
@@ -16,6 +19,18 @@ import PACK_OF_CARDS from "../utils/packOfCards";
 import shuffleCards from "../utils/shuffleCards";
 import { useState } from "react";
 const Game = (props) => {
+  let navigate = useNavigate()
+  useEffect(()=>{
+    const token = localStorage.getItem('token')
+    axios.get('http://localhost:3001/protected', {headers: {
+      Authorization: token
+    }}).then((res)=>{
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+      navigate('/')
+    })
+  })
   const [player2Deck,setPlayer2Deck]=useState([]);
   useEffect(() => {
     const shuffledCards = shuffleCards(PACK_OF_CARDS);
