@@ -5,8 +5,10 @@ import Input from "../UI/Input";
 import { useForm } from "../hooks/form-hook";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../utils/validators";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  let navigate = useNavigate()
   const [formState, inputHandler] = useForm({
     name: {
       value: "",
@@ -29,6 +31,7 @@ const Register = () => {
     .then((res)=>{
       console.log('Submitted')
       console.log(res)
+      navigate('/')
     })
     .catch((err)=>{
       console.log('ERR')
