@@ -20,7 +20,7 @@
   align-items: center;
   justify-content: center;
   margin-right: 275px;
-  margin-top: 5.5rem;
+  margin-top: 1.5rem;
 }
 .home .join-game input{
   width: 120px;
@@ -64,5 +64,10 @@
 
 .home .buttons .create-btn:hover{
   background: #876205;
+}
 
+.home svg{
+  margin-top: 3em;
+  height: 50px;
+  width: 50px;
 }

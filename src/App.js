@@ -17,17 +17,7 @@ function App() {
       <Route path="/game"   element={<Game/>} />
       <Route path="/leaderboard" element={<Leaderboard/>}/>
       <Route path="/leader" element={<Leader_1/>}/>
-    </Routes>
-
-
-    // <Register/>
-    // <Login/>
-    // <Home/>
-    // <Profile/>
-    // <Game/>
-
-    
-   
+    </Routes>   
   );
 }
 

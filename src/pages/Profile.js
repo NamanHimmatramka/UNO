@@ -8,6 +8,8 @@ import Opponent from "../components/Opponent";
 import India from "../assets/flags/india.png";
 import leaderboard from "../assets/Leaderboard.png";
 import home from "../assets/home.png"
+import { Link } from "react-router-dom";
+
 const Profile = () => {
   return (
     <div className="profile">
@@ -22,8 +24,8 @@ const Profile = () => {
           </div>
         </div>
         <div className="icons">
-          <img src={leaderboard} alt="" className="leaderboard" />
-          <img src={home} alt="" className="home-icon" />
+          <Link to='/leader'><img src={leaderboard} alt="" className="leaderboard-icon" /></Link>
+          <Link to='/home'><img src={home} alt="" className="home-icon" /></Link>
         </div>
       </div>
       <div className="right">

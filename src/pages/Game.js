@@ -9,10 +9,19 @@ import R2 from "../assets/cards-front/2R.png";
 import D2Y from "../assets/cards-front/D2Y.png";
 import D4W from "../assets/cards-front/D4W.png";
 import Chat from "../components/Chat";
-
 // import queryString from 'query-string';
-import randomCodeGenerator from '../utils/randomCodeGenerator'
+import randomCodeGenerator from "../utils/randomCodeGenerator";
+import { useEffect } from "react";
+import PACK_OF_CARDS from "../utils/packOfCards";
+import shuffleCards from "../utils/shuffleCards";
+import { useState } from "react";
 const Game = (props) => {
+  const [player2Deck,setPlayer2Deck]=useState([]);
+  useEffect(() => {
+    const shuffledCards = shuffleCards(PACK_OF_CARDS);
+    setPlayer2Deck(shuffledCards.splice(0, 7));
+    console.log(player2Deck);
+  }, []);
   // const data = queryString.parse(props.location.search)
   return (
     <div className="game">
@@ -33,25 +42,31 @@ const Game = (props) => {
         </div>
         <br />
         <div className="middle-info">
-            <button className="draw-card">
-                Draw Card
-            </button>
-            <img src={Y6} alt="" className="card-middle" />
-            <button className="uno">UNO</button>
+          <button className="draw-card">Draw Card</button>
+          <img src={Y6} alt="" className="card-middle" />
+          <button className="uno">UNO</button>
         </div>
         <br />
         <div className="player2deck">
-            <img src={D2Y} alt="" className="card-front"/>
-            <img src={Y6} alt="" className="card-front"/>
-            <img src={G5} alt="" className="card-front"/>
-            <img src={RR} alt="" className="card-front"/>
-            <img src={B1} alt="" className="card-front"/>
-            <img src={R2} alt="" className="card-front"/>
-            <img src={D4W} alt="" className="card-front"/>
-            <h1>Player 2</h1>
+          {player2Deck.map((item, i) => (
+            <img
+              key={i}
+              className="card-front"
+              // onClick={() => onCardPlayedHandler(item)}
+              src={require(`../assets/cards-front/${item}.png`)}
+            />
+          ))}
+          {/* <img src={D2Y} alt="" className="card-front" />
+          <img src={Y6} alt="" className="card-front" />
+          <img src={G5} alt="" className="card-front" />
+          <img src={RR} alt="" className="card-front" />
+          <img src={B1} alt="" className="card-front" />
+          <img src={R2} alt="" className="card-front" />
+          <img src={D4W} alt="" className="card-front" /> */}
+          <h1>Player 2</h1>
         </div>
         <div className="chatBoxWrapper">
-            <Chat/>
+          <Chat />
         </div>
       </div>
     </div>
