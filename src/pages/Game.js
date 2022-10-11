@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import axios from "axios";
 // import queryString from 'query-string';
 import randomCodeGenerator from "../utils/randomCodeGenerator";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import PACK_OF_CARDS from "../utils/packOfCards";
 import shuffleCards from "../utils/shuffleCards";
 import { useState } from "react";
