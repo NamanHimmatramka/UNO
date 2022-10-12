@@ -43,7 +43,10 @@ const Profile = () => {
   const closeModal = () => {
     setShowModal(false);
   };
-  const confirmLogout = () => {};
+  const confirmLogout = () => {
+    localStorage.clear()
+    navigate('/')
+  };
   const updateProfileHandler = () => {
     setUpdateModal(true);
     console.log(updateModal);
