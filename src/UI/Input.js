@@ -52,7 +52,7 @@ const Input = (props) => {
       <input
         id={props.id}
         type={props.type}
-        name={props.name}
+        name={props.name} 
         //   value={props.value}
         placeholder={props.placeholder}
         onChange={changeHandler}

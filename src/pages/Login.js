@@ -1,16 +1,17 @@
-import "./Login.css";
-import logo from "../assets/logo.png";
-import Input from "../UI/Input";
 import { useForm } from "../hooks/form-hook";
-import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../utils/validators";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import React, { useEffect } from "react";
+import { useNavigate,Link } from "react-router-dom";
+import React, { useEffect, useReducer } from "react";
 import { useState } from "react";
 import Modal from "../UI/Modal";
 import Button from "../UI/Button";
-const Login = () => {
+import "./Login.css";
+import logo from "../assets/logo.png";
+import { useRef } from "react";
+
+export default function () {
   const [loginState, setLoginState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -24,9 +25,7 @@ const Login = () => {
         console.log(res);
         navigate("/home");
       })
-      .catch((err) => {
-        // console.log(err);
-      });
+      .catch((err) => {});
   });
   const [formState, inputHandler] = useForm({
     email: {
@@ -43,12 +42,17 @@ const Login = () => {
     console.log("Submit");
     console.log(formState);
     axios
-      .post("/user/login", formState)
+      .post("http://localhost:3001/user/login", formState)
       .then((res) => {
         console.log("Submitted");
         console.log(res);
-        if(!res.data.success){
-          setLoginState(true)
+        if (!res.data.success) {
+          if (res.data.msg === "User Not Registered") {
+            setErrorMessage("User Not Registered!! Register first");
+          } else {
+            setErrorMessage("Invalid Password!! Try Again");
+          }
+          setLoginState(true);
         }
         if (res.data.success) {
           localStorage.setItem("token", res.data.token);
@@ -57,56 +61,65 @@ const Login = () => {
       })
       .catch((err) => {
         console.log("ERR");
-        // setLoginState(true);
         console.log(err);
       });
   };
   const loginErrorHandler = () => {
     setLoginState(false);
   };
+  const emailRef = useRef(null);
+  const passRef = useRef(null);
+  const emailChangeHandler = () => {
+    console.log(emailRef.current.value);
+    inputHandler("email", emailRef.current.value, true);
+  };
+  const passChangeHandler = () => {
+    inputHandler("password", passRef.current.value, true);
+  };
   return (
-    <React.Fragment>
+    <div className="login_p">
       <Modal
         show={loginState}
         header="An Error Occurred!"
-        //  onCancel={}
+        onCancel={loginErrorHandler}
         footer={<Button onClick={loginErrorHandler}>Okay</Button>}
       >
-        Invalid Credentials!! Please try again.
+        {errorMessage}
       </Modal>
-      <div className="login">
-        <img src={logo} alt="logo" className="logologin" />
-        <form onSubmit={onSubmitHandler} className="login-form">
-          {/* <label htmlFor="email">Email</label>
-        <input type="email" placeholder="abc@gmail.com" /> */}
-          <Input
-            id="email"
-            type="email"
-            name="EMAIL"
-            placeholder="abc@gmail.com"
-            onInput={inputHandler}
-            validators={[VALIDATOR_EMAIL]}
-            column
-          />
-          <Input
-            id="password"
-            type="password"
-            name="PASSWORD"
-            placeholder="********"
-            onInput={inputHandler}
-            validators={[VALIDATOR_MINLENGTH(5)]}
-            column
-          />
-          <a href="" className="forgot">
-            Forgot Password?
-          </a>
-          <a href="/register" className="new-user">
-            New User? Register Here
-          </a>
-          <button className="login-btn">LOGIN</button>
+      <img src={logo} alt="logo" className="logologin" />
+      <div className="center">
+        <h1>Login</h1>
+        <form method="post" onSubmit={onSubmitHandler}>
+          <div className="txt_field">
+            <input
+              type="email"
+              required
+              id="email"
+              onChange={emailChangeHandler}
+              ref={emailRef}
+            />
+            <span></span>
+            <label>Email</label>
+          </div>
+          <div className="txt_field">
+            <input
+              type="password"
+              required
+              onChange={passChangeHandler}
+              ref={passRef}
+            />
+            <span></span>
+            <label>Password</label>
+          </div>
+          <div className="pass">Forgot Password?</div>
+          <input type="submit" value="Login" />
+          <Link to="/register">
+            <div className="signup_link">
+              Not a Player? Signup
+            </div>
+          </Link>
         </form>
       </div>
-    </React.Fragment>
+    </div>
   );
-};
-export default Login;
+}

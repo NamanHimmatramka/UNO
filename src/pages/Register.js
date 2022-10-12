@@ -1,14 +1,15 @@
 import "./Register.css";
-// import bgY from '../assets/backgrounds/bgY.png'
 import logo from "../assets/logo.png";
-import Input from "../UI/Input";
 import { useForm } from "../hooks/form-hook";
-import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from "../utils/validators";
+import React,{useRef,useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-const Register = () => {
-  let navigate = useNavigate()
+import Modal from "../UI/Modal";
+import Button from "../UI/Button";
+export default function () {
+  const [registerState, setRegisterState] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  let navigate = useNavigate();
   const [formState, inputHandler] = useForm({
     name: {
       value: "",
@@ -25,69 +26,105 @@ const Register = () => {
   });
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Submit")
-    console.log(formState)
-    axios.post('/user/register', formState)
-    .then((res)=>{
-      console.log('Submitted')
-      console.log(res)
-      if(!res.success)
-      {
-        if(res.msg==='User already registered'){
-          console.log("rvrv")
+    console.log("Submit");
+    console.log(formState);
+    axios
+      .post("http://localhost:3001/user/register", formState)
+      .then((res) => {
+        console.log("Submitted");
+        console.log(res);
+        if (!res.data.success) {
+          if (res.data.msg === "User already registered") {
+            console.log("hello")
+            setRegisterState(true);
+            setErrorMessage("User already registered!!")
+          }
+          else{
+            setRegisterState(true);
+            setErrorMessage("Some other error occured");
+          }
         }
-      }
-      navigate('/')
-    })
-    .catch((err)=>{
-      console.log('ERR')
-      console.log(err);
-    })
+        if(res.data.success){
+          navigate("/");
+        }
+      })
+      .catch((err) => {
+        console.log("ERR");
+        console.log(err);
+      });
+  };
+  const registerErrorHandler = () => {
+    setRegisterState(false);
+  };
+  const emailRef = useRef(null);
+  const passRef = useRef(null);
+  const nameRef = useRef(null);
+  const countryRef = useRef(null);
+  const emailChangeHandler = () => {
+    inputHandler("email", emailRef.current.value, true);
+  };
+  const passChangeHandler = () => {
+    inputHandler("password", passRef.current.value, true);
+  };
+  const nameChangeHandler = () => {
+    inputHandler("name", nameRef.current.value, true);
+  };
+  const countryChangeHandler = () => {
+    inputHandler("country", countryRef.current.value, true);
   };
   return (
-    <div className="register">
-      <img src={logo} alt="" className="logo" />
-      {/* <Card> */}
-      <form onSubmit={onSubmitHandler} className="register-form">
-        <Input
-          id="name"
-          type="text"
-          name="NAME"
-          placeholder="VATSAL GOHIL"
-          onInput={inputHandler}
-          validators={[VALIDATOR_REQUIRE]}
-          row
-        />
-        <Input
-          id="email"
-          type="email"
-          name="EMAIL"
-          placeholder="abc@gmail.com"
-          onInput={inputHandler}
-          validators={[VALIDATOR_EMAIL]}
-          row
-        />
-        <Input
-          id="password"
-          type="password"
-          name="PASSWORD"
-          placeholder="********"
-          onInput={inputHandler}
-          validators={[VALIDATOR_MINLENGTH(5)]}
-          row
-        />
-        <Input
-          row
-          type="password"
-          name="CONFIRM PASSWORD"
-          placeholder="********"
-          onInput={inputHandler}
-          validators={[VALIDATOR_MINLENGTH(5)]}
-        />
-        <button className="register-btn">REGISTER</button>
-      </form>
-      {/* </Card> */}
+    <div className="register_p">
+      <Modal
+        show={registerState}
+        header="An Error Occurred!"
+        onCancel={registerErrorHandler}
+        footer={<Button onClick={registerErrorHandler}>Okay</Button>}
+      >
+        {errorMessage}
+      </Modal>
+      <img src={logo} alt="logo" className="logoregister" />
+      <div className="center">
+        <h1>Register</h1>
+        <form method="post" onSubmit={onSubmitHandler}>
+          <div className="txt_field">
+            <input type="text" required onChange={nameChangeHandler}
+              ref={nameRef} />
+            <span></span>
+            <label>Name</label>
+          </div>
+
+          <div className="txt_field">
+            <input
+              type="email"
+              required
+              onChange={emailChangeHandler}
+              ref={emailRef}
+            />
+            <span></span>
+            <label>Email ID</label>
+          </div>
+
+          <div className="txt_field">
+            <input
+              type="password"
+              required
+              onChange={passChangeHandler}
+              ref={passRef}
+            />
+            <span></span>
+            <label>Password</label>
+          </div>
+
+          <div className="txt_field">
+            <input type="text" required onChange={countryChangeHandler}
+              ref={countryRef}/>
+            <span></span>
+            <label>Country</label>
+          </div>
+
+          <input type="submit" value="Register" />
+        </form>
+      </div>
     </div>
   );
-};
-export default Register;
+}
