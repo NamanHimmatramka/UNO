@@ -1,11 +1,11 @@
 const multer = require('multer')
 const multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, "profile_pictures");
+        cb(null, "public/profile_pictures");
     },
     filename: (req, file, cb) => {
         const ext = file.mimetype.split("/")[1];
-        cb(null, `files/admin-${file.fieldname}-${req.params.email}.${ext}`);
+        cb(null, `files/admin-${file.fieldname}-${req.user._id}.${ext}`);
     },
 });
 

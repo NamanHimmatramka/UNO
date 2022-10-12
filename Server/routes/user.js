@@ -46,6 +46,7 @@ router.post('/register', (req, res, next)=>{
                         name: req.body.inputs.name.value,
                         userName: req.body.inputs.email.value,
                         password: hashedPassword,
+                        country: req.body.inputs.country.value
                     })
                     try{
                         newUser.save()

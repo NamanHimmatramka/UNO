@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    country:{
+        type: String,
+        required: true
+    },
     noOfGames:{
         type: Number,
         default: 0

@@ -2,34 +2,23 @@ const User = require('../models/user')
 const router = require('express').Router()
 const upload = require('../config/multer')
 const path = require('path')
+const passport = require('passport')
+router.use(passport.authenticate('jwt', {session: false}))
 
-router.post('/dp/:email', upload.single('testImage'), async(req,res)=>{
-    const email = req.params.email
-    User.findOne({userName: email})
-    .then((user)=>{
-        if(!user){
-            res.json({success:false, msg:'User Not Found'})
-        }
-        user.displayPicture = "/profile_pictures/"+req.file.filename
-        try{
-            user.save()
-            .then((user)=>{
-                res.json({success:true, msg: "Profile picture changed"})
-            })
-        }
-        catch(err){
-            res.json({success: false, msg: err})
-        }
-    })
+router.post('/dp', upload.single('testImage'), async(req,res)=>{
+    const user = req.user
+    user.displayPicture = "/profile_pictures/"+req.file.filename
+    try{
+        user.save()
+        .then((user)=>{
+            res.json({success:true, msg: "Profile picture changed"})
+        })
+    }
+    catch(err){
+        res.json({success: false, msg: err})
+    }
 })
-router.get('/user/:email', (req,res)=>{
-    const email = req.params.email
-    User.findOne({userName: email})
-    .then((user)=>{
-        if(!user){
-            res.json({success:false, msg:'User Not Found'})
-        }
-        res.json({success: true, user: user})
-    })
+router.get('/user', (req,res)=>{
+    res.json(req.user)
 })
 module.exports = router
