@@ -25,7 +25,7 @@ const Login = () => {
         navigate("/home");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   });
   const [formState, inputHandler] = useForm({
@@ -47,6 +47,9 @@ const Login = () => {
       .then((res) => {
         console.log("Submitted");
         console.log(res);
+        if(!res.data.success){
+          setLoginState(true)
+        }
         localStorage.setItem("token", res.data.token);
         navigate("/home");
       })
