@@ -10,7 +10,7 @@ import { useState } from "react";
 import Modal from "../UI/Modal";
 import Button from "../UI/Button";
 const Login = () => {
-  const [loginState, setLoginState] = useState(true);
+  const [loginState, setLoginState] = useState(false);
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -50,8 +50,10 @@ const Login = () => {
         if(!res.data.success){
           setLoginState(true)
         }
-        localStorage.setItem("token", res.data.token);
-        navigate("/home");
+        if (res.data.success) {
+          localStorage.setItem("token", res.data.token);
+          navigate("/home");
+        }
       })
       .catch((err) => {
         console.log("ERR");
