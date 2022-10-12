@@ -56,28 +56,11 @@
   align-items: center;
 }
 
-.game .middle-info .draw-card {
-  background-color: #3278e1;
-  width: 100px;
-  height: 30px;
-  border: 1px solid black;
-  border-radius: 10px;
-  color: white;
-  margin-right: 7rem;
-}
+
 .game .middle-info .card-middle {
   width: 6rem;
   height: 9rem;
-}
-
-.game .middle-info .uno {
-  background-color: #b2a20d;
-  width: 70px;
-  height: 30px;
-  border: 1px solid black;
-  border-radius: 10px;
-  color: white;
-  margin-left: 7rem;
+  margin: 0 6rem;
 }
 
 .game .player2deck {

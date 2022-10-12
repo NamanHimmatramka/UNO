@@ -2,12 +2,6 @@ import "./Game.css";
 import Logo from "../assets/logo.png";
 import cardBack from "../assets/card-back.png";
 import Y6 from "../assets/cards-front/6Y.png";
-import G5 from "../assets/cards-front/5G.png";
-import RR from "../assets/cards-front/_R.png";
-import B1 from "../assets/cards-front/1B.png";
-import R2 from "../assets/cards-front/2R.png";
-import D2Y from "../assets/cards-front/D2Y.png";
-import D4W from "../assets/cards-front/D4W.png";
 import Chat from "../components/Chat";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -18,6 +12,7 @@ import randomCodeGenerator from "../utils/randomCodeGenerator";
 import PACK_OF_CARDS from "../utils/packOfCards";
 import shuffleCards from "../utils/shuffleCards";
 import { useState } from "react";
+import GameButton from "../UI/GameButton";
 const Game = (props) => {
   let navigate = useNavigate()
   useEffect(()=>{
@@ -32,9 +27,11 @@ const Game = (props) => {
     })
   })
   const [player2Deck,setPlayer2Deck]=useState([]);
+  const [middleCard,setMiddleCard]=useState([]);
   useEffect(() => {
     const shuffledCards = shuffleCards(PACK_OF_CARDS);
     setPlayer2Deck(shuffledCards.splice(0, 7));
+    setMiddleCard(shuffledCards.splice(0,1));
     console.log(player2Deck);
   }, []);
   // const data = queryString.parse(props.location.search)
@@ -57,9 +54,17 @@ const Game = (props) => {
         </div>
         <br />
         <div className="middle-info">
-          <button className="draw-card">Draw Card</button>
-          <img src={Y6} alt="" className="card-middle" />
-          <button className="uno">UNO</button>
+          <GameButton red action='Draw Card'/>
+          {/* <img src={Y6} alt="" className="card-middle" /> */}
+          {middleCard.map((item, i) => (
+            <img
+              key={i}
+              className="card-middle"
+              // onClick={() => onCardPlayedHandler(item)}
+              src={require(`../assets/cards-front/${item}.png`)}
+            />
+          ))}
+          <GameButton green action="UNO"/>
         </div>
         <br />
         <div className="player2deck">
@@ -71,13 +76,6 @@ const Game = (props) => {
               src={require(`../assets/cards-front/${item}.png`)}
             />
           ))}
-          {/* <img src={D2Y} alt="" className="card-front" />
-          <img src={Y6} alt="" className="card-front" />
-          <img src={G5} alt="" className="card-front" />
-          <img src={RR} alt="" className="card-front" />
-          <img src={B1} alt="" className="card-front" />
-          <img src={R2} alt="" className="card-front" />
-          <img src={D4W} alt="" className="card-front" /> */}
           <h1>Player 2</h1>
         </div>
         <div className="chatBoxWrapper">

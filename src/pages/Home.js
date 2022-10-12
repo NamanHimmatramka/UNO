@@ -4,19 +4,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import randomCodeGenerator from "../utils/randomCodeGenerator";
 import axios from "axios";
+import GameButton from "../UI/GameButton";
 const Home = () => {
-  let navigate = useNavigate()
-  useEffect(()=>{
-    const token = localStorage.getItem('token')
-    axios.get('http://localhost:3001/protected', {headers: {
-      Authorization: token
-    }}).then((res)=>{
-      console.log(res)
-    }).catch(err=>{
-      console.log(err)
-      navigate('/')
-    })
-  })
+  let navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://localhost:3001/protected", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/");
+      });
+  });
   const [roomCode, setRoomCode] = useState("");
   const roomCodeChangeHandler = (event) => {
     setRoomCode(event.target.value);
@@ -27,12 +33,12 @@ const Home = () => {
       <div className="join-game">
         <input type="text" placeholder="Game Code" />
         <Link to={`/game`}>
-          <button className="join-btn">Join Game</button>
+          <GameButton green action="Join Game" />
         </Link>
       </div>
-      <div className="buttons">
+      <div className="create-game">
         <Link to={`/game`}>
-          <button className="create-btn">Create Game</button>
+          <GameButton orange action="Create Game" />
         </Link>
       </div>
       <Link to="/profile">
