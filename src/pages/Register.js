@@ -31,6 +31,12 @@ const Register = () => {
     .then((res)=>{
       console.log('Submitted')
       console.log(res)
+      if(!res.success)
+      {
+        if(res.msg==='User already registered'){
+          console.log("rvrv")
+        }
+      }
       navigate('/')
     })
     .catch((err)=>{

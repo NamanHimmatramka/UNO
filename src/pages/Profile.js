@@ -14,8 +14,9 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import logout from "../assets/logout.png";
 import { useState } from "react";
-import  Modal from "../UI/Modal.js";
-import Button from '../UI/Button'
+import Modal from "../UI/Modal.js";
+import Button from "../UI/Button";
+import { ImagePicker } from "react-file-picker";
 const Profile = () => {
   let navigate = useNavigate();
   useEffect(() => {
@@ -35,18 +36,26 @@ const Profile = () => {
       });
   });
   const [showModal, setShowModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(false);
   const openModal = () => {
     setShowModal(true);
   };
-  const closeModal=()=>{
+  const closeModal = () => {
     setShowModal(false);
-  }
-  const confirmLogout=()=>{
-
   };
+  const confirmLogout = () => {};
+  const updateProfileHandler = () => {
+    setUpdateModal(true);
+    console.log(updateModal);
+  };
+  const closeUpdateModal = () => {
+    setUpdateModal(false);
+  };
+  const changeProfileImage = () => {};
   return (
     <React.Fragment>
-      <Modal show={showModal}
+      <Modal
+        show={showModal}
         onCancel={closeModal}
         header="Are you sure?"
         contentCLass="modal-content"
@@ -60,14 +69,52 @@ const Profile = () => {
               Logout
             </Button>
           </React.Fragment>
-        }>
-          Do you want to logout
+        }
+      >
+        Do you want to logout
+      </Modal>
+      <Modal
+        show={updateModal}
+        header="Update Profile Image??"
+        onCancel={closeUpdateModal}
+        contentCLass="modal-content"
+        footerClass="modal-actions"
+        footer={
+          <React.Fragment>
+            <Button inverse onClick={closeUpdateModal}>
+              Cancel
+            </Button>
+            <Button danger onClick={changeProfileImage}>
+              Update
+            </Button>
+          </React.Fragment>
+        }
+      >
+        <React.Fragment>
+          <ImagePicker
+            extensions={["jpeg"]}
+            dims={{
+              minWidth: 100,
+              maxWidth: 500,
+              minHeight: 100,
+              maxHeight: 500,
+            }}
+            // onChange={base64 => (/* do something with base64 encoded string */)
+            // onError={errMsg => (/* do something with err msg string */)
+          >
+            <button>Click to upload image</button>
+          </ImagePicker>
+        </React.Fragment>
       </Modal>
       <div className="profile">
         <div className="left">
           <img src={logo} alt="" className="logoProfile" />
           <div className="profile-section">
-            <img className="profile-background" src={user1}></img>
+            <img
+              className="profile-background"
+              src={user1}
+              onClick={updateProfileHandler}
+            ></img>
             <div className="profile-info">
               <h1 className="name">Parth Gujarathi</h1>
               <h2 className="rank">Amateur</h2>

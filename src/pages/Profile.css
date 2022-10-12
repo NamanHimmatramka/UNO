@@ -28,7 +28,10 @@
   /* border: 2px solid black; */
   border-radius: 200px;
 }
-
+.profile .left .profile-background:hover{
+  cursor: pointer;
+  transform: scale(1.1);
+}
 .profile .left .profile-info {
   display: flex;
   flex-direction: column;
@@ -92,6 +95,7 @@
   height: 200px;
   transform: rotate(18.5deg);
 }
+
 
 .modal-actions{
     text-align: right;
