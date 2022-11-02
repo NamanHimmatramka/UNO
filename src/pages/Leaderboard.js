@@ -6,17 +6,34 @@ import { useEffect } from "react";
 import axios from "axios";
 const Leaderboard = () => {
   let navigate = useNavigate()
-  useEffect(()=>{
-    const token = localStorage.getItem('token')
-    axios.get('http://localhost:3001/protected', {headers: {
-      Authorization: token
-    }}).then((res)=>{
-      console.log(res)
-    }).catch(err=>{
-      console.log(err)
-      navigate('/')
-    })
-  })
+  useEffect(() => {
+    console.log('IN')
+    const token = localStorage.getItem("token");
+    axios
+      .get("http://localhost:3001/protected", {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        axios.get("http://localhost:3001/leaderboard/", {
+          headers:{
+            Authorization: token,
+          }
+        })
+        .then((res)=>{
+          console.log(res.data)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/");
+      });
+  });
   return (
     <div className="leaderboard">
         <div className="temp"></div>

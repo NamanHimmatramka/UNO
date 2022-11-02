@@ -19,7 +19,6 @@ app.use('/user', require('./routes/user'))
 app.use('/profile',require('./routes/profile'))
 app.use('/leaderboard',require('./routes/leaderboard'))
 app.get('/protected', passport.authenticate('jwt', {session:false}),(req,res)=>{
-    console.log("GET")
     res.json({success: true})
 })
 app.listen(port, ()=>{
