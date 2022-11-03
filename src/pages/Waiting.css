@@ -1,0 +1,30 @@
+.waiting {
+  margin: 0;
+  padding: 0;
+  background-image: url("../assets/backgrounds/bgB.png");
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  color: white;
+}
+
+.logo-code{
+    display: flex;
+}
+
+.logowaiting{
+    width: 150px;
+    height: 150px;
+    margin-left: 30px;
+}
+
+.game-code{
+    color: white;
+    margin-left: 350px;
+}
+
+.wait-player{
+    /* margin-top: -20px; */
+    text-align: center;
+}
