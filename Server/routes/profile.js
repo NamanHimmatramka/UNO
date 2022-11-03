@@ -5,7 +5,7 @@ const path = require('path')
 const passport = require('passport')
 router.use(passport.authenticate('jwt', {session: false}))
 
-router.post('/dp', upload.single('testImage'), async(req,res)=>{
+router.put('/dp', upload.single('testImage'), async(req,res)=>{
     const user = req.user
     user.displayPicture = "/profile_pictures/"+req.file.filename
     try{

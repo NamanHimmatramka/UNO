@@ -10,6 +10,7 @@ const multerStorage = multer.diskStorage({
 });
 
 const multerFilter = (req, file, cb) => {
+    console.log("Inside Destination")
     if (file.mimetype.split("/")[1] === "jpg" || file.mimetype.split("/")[1] === "jpeg") {
         cb(null, true);
     } else {

@@ -19,6 +19,7 @@ import Button from "../UI/Button";
 import { ImagePicker } from "react-file-picker";
 const Profile = () => {
   let navigate = useNavigate();
+  let user
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
@@ -29,6 +30,17 @@ const Profile = () => {
       })
       .then((res) => {
         console.log(res);
+        axios.get("http://localhost:3001/profile/user", {
+          headers:{
+            Authorization: token,
+          }
+        })
+        .then((res)=>{
+          console.log(res.data)
+        })
+        .catch((err)=>{
+          console.log(err)
+        })
       })
       .catch((err) => {
         console.log(err);
