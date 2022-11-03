@@ -4,7 +4,7 @@ import cardBack from "../assets/card-back.png";
 import Y6 from "../assets/cards-front/6Y.png";
 import Chat from "../components/Chat";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect,useContext } from "react";
 import axios from "axios";
 // import queryString from 'query-string';
 import randomCodeGenerator from "../utils/randomCodeGenerator";
@@ -13,7 +13,11 @@ import PACK_OF_CARDS from "../utils/packOfCards";
 import shuffleCards from "../utils/shuffleCards";
 import { useState } from "react";
 import GameButton from "../UI/GameButton";
+import { AppContext } from "../context/appContext";
+
 const Game = (props) => {
+  const socket=useContext(AppContext);
+  
   let navigate = useNavigate()
   useEffect(()=>{
     const token = localStorage.getItem('token')

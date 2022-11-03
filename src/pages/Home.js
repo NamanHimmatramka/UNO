@@ -1,11 +1,16 @@
 import "./Home.css";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import randomCodeGenerator from "../utils/randomCodeGenerator";
 import axios from "axios";
 import GameButton from "../UI/GameButton";
+import { AppContext } from "../context/appContext";
+import Waiting from "./Waiting";
+
 const Home = () => {
+  const socket = useContext(AppContext);
+  const inputGameId=useRef();
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,19 +32,30 @@ const Home = () => {
   const roomCodeChangeHandler = (event) => {
     setRoomCode(event.target.value);
   };
+  const createGameHandler = () => {
+    let token = localStorage.getItem("token");
+    const tokenArray = token.split(" ");
+    socket.emit("create-game", tokenArray[1]);
+    socket.on("gameId", (gameId) => {
+      if (gameId) {
+        // router
+        navigate(`/waiting/${gameId}`);
+      }
+    });
+  };
+  const joinGameHandler=()=>{
+  }
   return (
     <div className="home">
       <img src={logo} alt="" className="logohome" />
       <div className="join-game">
-        <input type="text" placeholder="Game Code" />
+        <input type="text" placeholder="Game Code" ref={inputGameId}/>
         <Link to={`/game`}>
-          <GameButton green action="Join Game" />
+          <GameButton green action="Join Game"  />
         </Link>
       </div>
       <div className="create-game">
-        <Link to={`/game`}>
-          <GameButton orange action="Create Game" />
-        </Link>
+        <GameButton orange action="Create Game" onClick={createGameHandler} />
       </div>
       <Link to="/profile">
         <svg

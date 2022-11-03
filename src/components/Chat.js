@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./Chat.css";
-import { FaArrowUp,FaArrowDown } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 const Chat = () => {
+  const message = useRef();
   const toggleChatBox = () => {
     const chatBody = document.querySelector(".chat-body");
     if (isChatBoxHidden) {
@@ -13,17 +14,18 @@ const Chat = () => {
     }
   };
   const [isChatBoxHidden, setIsChatBoxHidden] = useState(true);
+  const messageSubmitHandler = () => [];
   return (
     <div className="chat-box">
       <div className="chat-head">
         <h2>Chat Box</h2>
         {isChatBoxHidden ? (
-          <span onClick={toggleChatBox} >
-            <FaArrowUp/>
+          <span onClick={toggleChatBox}>
+            <FaArrowUp />
           </span>
         ) : (
-          <span onClick={toggleChatBox} >
-            <FaArrowDown/>
+          <span onClick={toggleChatBox}>
+            <FaArrowDown />
           </span>
         )}
       </div>
@@ -31,14 +33,14 @@ const Chat = () => {
         <div className="msg-receive">Hey!</div>
         <div className="msg-send">Goodluck have fun</div>
         <div className="chat-text">
-        <input
-          type="text"
-          placeholder="Type a message..."
-          //   value={message}
-        />
+          <input
+            type="text"
+            placeholder="Type a message..."
+            ref={message}
+            onEnter={messageSubmitHandler}
+          />
+        </div>
       </div>
-      </div>
-      
     </div>
   );
 };
