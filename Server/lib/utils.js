@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const packOfCards = require('./packOfCards')
+
 require('dotenv').config()
 const createSalt = async ()=>{
     const salt = await bcrypt.genSalt(10)
@@ -27,7 +29,18 @@ const issueJWT= (user)=>{
     }
 }
 
+const shuffledCards = ()=>{ 
+    var array = packOfCards
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1))
+        var temp = array[i]
+        array[i] = array[j]
+        array[j] = temp;
+    }   
+    return array;
+}
 module.exports.createPassword = createPassword
 module.exports.createSalt = createSalt
 module.exports.validPassword = validPassword
 module.exports.issueJWT = issueJWT
+module.exports.shuffledCards = shuffledCards

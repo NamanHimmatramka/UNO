@@ -1,5 +1,6 @@
 const Game = require("../models/game");
 const JWT = require("jsonwebtoken");
+const startGame = require('../gameplay').startGame
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
@@ -14,7 +15,8 @@ module.exports = (io) => {
       try {
         newGame.save().then((game) => {
           socket.emit("gameId", game._id);
-          socket.join(game._id);
+          console.log(game._id.toString())
+          socket.join(game._id.toString());
         });
       } catch (err) {
         console.log(err);
@@ -26,21 +28,22 @@ module.exports = (io) => {
       const userId = decodedJwt.sub;
       Game.findById(gameId).then((game) => {
         if (!game) {
-        } else if (game.userId2 != null) {
-        } else {
+          socket.emit("error", {msg:"Incorrect Game ID"})
+        } 
+        else if (game.userId2 != null) {
+          socket.emit("error", {msg:"Game Full"})
+        } 
+        else {
           game.userId2 = userId;
           try {
             game.save().then((game) => {
-              socket.join(game._id);
-              socket
-                .to(game._id)
-                .emit("game-start", {
-                  user1: game.userId1,
-                  user2: game.userId2,
-                });
+              console.log(gameId)
+              socket.join(gameId);
+              socket.emit("join-successful")
+              startGame(io, gameId, game.userId1, game.userId2)
             });
           } catch (err) {
-            console.log(err);
+            socket.emit("error", {msg:err})
           }
         }
       });
