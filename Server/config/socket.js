@@ -23,7 +23,9 @@ module.exports = (io) => {
       }
     });
 
-    socket.on("join-game", (gameId, jwt) => {
+    socket.on("join-game", (res) => {
+      const jwt=res.jwt;
+      const gameId=res.gameId;
       const decodedJwt = JWT.decode(jwt);
       const userId = decodedJwt.sub;
       Game.findById(gameId).then((game) => {
@@ -39,7 +41,7 @@ module.exports = (io) => {
             game.save().then((game) => {
               console.log(gameId)
               socket.join(gameId);
-              socket.emit("join-successful")
+              socket.emit("join-successful",gameId)
               startGame(io, gameId, game.userId1, game.userId2)
             });
           } catch (err) {

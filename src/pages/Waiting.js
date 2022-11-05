@@ -3,9 +3,25 @@ import "./Waiting.css";
 import logo from "../assets/logo.png";
 import GameButton from "../UI/GameButton";
 import {useParams} from 'react-router-dom';
+import { useEffect,useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/appContext";
+import { GameContext } from "../context/gameContext";
 
 const Waiting = () => {
   const {gameId}=useParams();
+  const socket = useContext(AppContext);
+  const {setGameObject}=useContext(GameContext);
+  console.log(socket);
+  const navigate=useNavigate();
+  useEffect(()=>{
+    socket.on('game-start',(gameObject)=>{
+      setGameObject(gameObject);
+      navigate(`/game/${gameId}`)
+    });
+  },[socket,gameId])
+
+  
   return (
     <div className="waiting">
       <div className="logo-code">
