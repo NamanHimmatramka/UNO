@@ -9,10 +9,13 @@ import { AppContext } from "../context/appContext";
 import Waiting from "./Waiting";
 import Modal from "../UI/Modal";
 import Button from "../UI/Button";
+import { GameContext } from "../context/gameContext";
+
 const Home = () => {
   const socket = useContext(AppContext);
   const inputGameId = useRef(null);
   const [error, setError] = useState();
+  const {setGameObject}=useContext(GameContext);
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -59,9 +62,11 @@ const Home = () => {
       socket.on("error", (err) => {
         setError(err.msg);
       });
-      socket.on("join-successful", (gameId) => {
-        console.log(gameId);
-        navigate(`/waiting/${gameId}`);
+      socket.on("game-start", (res) => {
+        const gameObject=res.gameObject;
+        const gameId=res.gameId;
+        setGameObject(gameObject);
+        navigate(`/game/${gameId}`);
       });
     }
   };

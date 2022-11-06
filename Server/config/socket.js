@@ -43,7 +43,7 @@ module.exports = (io) => {
             game.save().then((game) => {
               console.log(gameId)
               socket.join(gameId);
-              socket.emit("join-successful",gameId)
+              // socket.emit("join-successful",gameId)
               startGame(io, gameId, game.jwt1, game.jwt2)
             });
           } catch (err) {
