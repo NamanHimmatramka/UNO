@@ -16,8 +16,9 @@ const Waiting = () => {
   const navigate=useNavigate();
   useEffect(()=>{
     socket.on('game-start',(gameObject)=>{
+      console.log(gameObject)
       setGameObject(gameObject);
-      navigate(`/game/${gameId}`)
+      // navigate(`/game/${gameId}`)
     });
   },[socket,gameId])
 

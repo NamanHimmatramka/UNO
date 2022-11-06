@@ -11,6 +11,7 @@ module.exports = (io) => {
       const userId = decodedJwt.sub;
       const newGame = new Game({
         userId1: userId,
+        jwt1: jwt
       });
       try {
         newGame.save().then((game) => {
@@ -37,17 +38,21 @@ module.exports = (io) => {
         } 
         else {
           game.userId2 = userId;
+          game.jwt2 = jwt
           try {
             game.save().then((game) => {
               console.log(gameId)
               socket.join(gameId);
               socket.emit("join-successful",gameId)
-              startGame(io, gameId, game.userId1, game.userId2)
+              startGame(io, gameId, game.jwt1, game.jwt2)
             });
           } catch (err) {
             socket.emit("error", {msg:err})
           }
         }
+      })
+      .catch((err)=>{
+        socket.emit("error", {msg:"Incorrect Game ID"})
       });
     });
   });

@@ -11,7 +11,6 @@ const startGame = (io, gameId, userId1, userId2) => {
             newMapUser1.set(user1Cards[i], 1)
         }
     }
-    console.log(newMapUser1)
     const newMapUser2 = new Map()
     const user2Cards = shuffledCards().splice(0, 7)
     for (i = 0; i < 7; i++) {
@@ -23,11 +22,10 @@ const startGame = (io, gameId, userId1, userId2) => {
         }
     }
     const middleCard = shuffledCards().splice(0, 1)
-    const newGameObject = {
-        [userId1]: newMapUser1,
-        [userId2]: newMapUser2,
-        middle: middleCard
-    }
+    const newGameObject = new Object();
+    newGameObject["middle"] = middleCard[0];
+    newGameObject[userId1] = Object.fromEntries(newMapUser1)
+    newGameObject[userId2] = Object.fromEntries(newMapUser2)
     console.log(newGameObject)
     games.set(gameId, newGameObject)
     io.to(gameId).emit("game-start", newGameObject)

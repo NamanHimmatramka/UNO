@@ -5,7 +5,15 @@ const gameSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    jwt1:{
+        type:String,
+        required: true
+    },
     userId2:{
+        type:String,
+        default: null
+    },
+    jwt2:{
         type:String,
         default: null
     }
