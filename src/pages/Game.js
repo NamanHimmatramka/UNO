@@ -57,9 +57,11 @@ const Game = (props) => {
 
   const onCardPlayedHandler = (item) => {
     if (cardIsPlayable(item)) {
-      const filteredArray = player1Deck.filter((element) => element !== item);
+      let index=player1Deck.indexOf(item)
+      // const filteredArray = player1Deck.filter((element) => element !== item);
+      player1Deck.splice(index,1);
       setMiddleCard(item);
-      setPlayer1Deck(filteredArray);
+      setPlayer1Deck([...player1Deck]);
       let token = localStorage.getItem("token");
       const tokenArray = token.split(" ");
       socket.emit("card-played", {
