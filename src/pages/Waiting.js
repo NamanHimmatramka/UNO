@@ -12,14 +12,17 @@ const Waiting = () => {
   const { gameId } = useParams();
   const socket = useContext(AppContext);
   const { setGameObject } = useContext(GameContext);
+  const {setTurn}=useContext(GameContext);
   console.log(socket);
   const navigate = useNavigate();
   useEffect(() => {
     socket.on("game-start", (res) => {
       const gameObject = res.gameObject;
       const gameId = res.gameId;
+      const turn=res.turn
       console.log(gameObject);
       setGameObject(gameObject);
+      setTurn(turn);
       navigate(`/game/${gameId}`);
     });
   }, [socket, gameId]);

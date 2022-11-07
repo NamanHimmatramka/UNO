@@ -17,9 +17,15 @@ import Button from "../UI/Button";
 
 const Game = (props) => {
   const socket = useContext(AppContext);
-  const { gameObject } = useContext(GameContext);
-  console.log(gameObject);
+  const { gameObject, setGameObject } = useContext(GameContext);
+  const { turn, setTurn } = useContext(GameContext);
   const { gameId } = useParams();
+  const [token, setToken] = useState();
+  const [player1Deck, setPlayer1Deck] = useState([]);
+  const [middleCard, setMiddleCard] = useState(null);
+  const [error, setError] = useState(null);
+  const [errorAction, setErrorAction] = useState();
+  const [isTurn, setIsTurn] = useState(false);
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,14 +43,15 @@ const Game = (props) => {
         navigate("/");
       });
   }, []);
-  const [player1Deck, setPlayer1Deck] = useState([]);
-  const [middleCard, setMiddleCard] = useState(null);
-  const [error, setError] = useState(null);
+
   useEffect(() => {
-    const shuffledCards = shuffleCards(PACK_OF_CARDS);
-    let token = localStorage.getItem("token");
-    const tokenArray = token.split(" ");
+    let tokenStorage = localStorage.getItem("token");
+    const tokenArray = tokenStorage.split(" ");
+    setToken(tokenArray[1]);
+    console.log(token);
     const player1Object = gameObject[tokenArray[1]];
+    console.log(player1Object);
+    setIsTurn(tokenArray[1] === turn);
     const temparray = [];
     for (var i in player1Object) {
       for (var j = 0; j < player1Object[i]; j++) {
@@ -52,25 +59,46 @@ const Game = (props) => {
       }
     }
     setPlayer1Deck(temparray);
+    socket.on("update-state", (res) => {
+      setGameObject(res.gameObject);
+      setTurn(res.turn);
+    });
     setMiddleCard(gameObject?.middle);
-  }, []);
+  }, [gameObject, socket]);
 
   const onCardPlayedHandler = (item) => {
-    if (cardIsPlayable(item)) {
-      let index=player1Deck.indexOf(item)
-      // const filteredArray = player1Deck.filter((element) => element !== item);
-      player1Deck.splice(index,1);
-      setMiddleCard(item);
-      setPlayer1Deck([...player1Deck]);
-      let token = localStorage.getItem("token");
-      const tokenArray = token.split(" ");
-      socket.emit("card-played", {
-        cardPlayed: item,
-        jwt: tokenArray[1],
-        gameId: gameId
-      });
+    if (isTurn) {
+      if (cardIsPlayable(item)) {
+        let index = player1Deck.indexOf(item);
+        player1Deck.splice(index, 1);
+        setMiddleCard(item);
+        setPlayer1Deck([...player1Deck]);
+        socket.emit("card-played", {
+          cardPlayed: item,
+          jwt: token,
+          gameId: gameId,
+        });
+        setTurn(null);
+      } else {
+        setError("Card cannot be played");
+        setErrorAction("Please select another card or draw a card");
+      }
     } else {
       setError("Card cannot be played");
+      setErrorAction("Its not your turn to play");
+    }
+  };
+
+  const drawCardHandler = () => {
+    if (isTurn) {
+      console.log("clicked draw card");
+      socket.emit("draw", {
+        jwt: token,
+        gameId: gameId,
+      });
+    } else {
+      setError("Cannot draw a card");
+      setErrorAction("Its not your turn to play");
     }
   };
 
@@ -97,12 +125,14 @@ const Game = (props) => {
         header={error}
         onCancel={() => {
           setError();
+          setErrorAction();
         }}
         footer={
           <>
             <Button
               onClick={() => {
                 setError();
+                setErrorAction();
               }}
             >
               Okay
@@ -110,7 +140,7 @@ const Game = (props) => {
           </>
         }
       >
-        <h2>Please select another card or draw a card</h2>
+        <h2>{errorAction}</h2>
       </Modal>
       <div className="game">
         <div className="top-info">
@@ -130,7 +160,7 @@ const Game = (props) => {
           </div>
           <br />
           <div className="middle-info">
-            <GameButton red action="Draw Card" />
+            <GameButton red action="Draw Card" onClick={drawCardHandler} />
 
             <img
               className="card-middle"
@@ -152,7 +182,7 @@ const Game = (props) => {
                 src={require(`../assets/cards-front/${item}.png`)}
               />
             ))}
-            <h1>Player 1</h1>
+            <h1>{isTurn ? "Your Turn" : "Opponent's Turn"}</h1>
           </div>
           <div className="chatBoxWrapper">
             <Chat />

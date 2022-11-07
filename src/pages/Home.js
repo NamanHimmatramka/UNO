@@ -16,6 +16,7 @@ const Home = () => {
   const inputGameId = useRef(null);
   const [error, setError] = useState();
   const {setGameObject}=useContext(GameContext);
+  const {setTurn}=useContext(GameContext);
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -65,7 +66,9 @@ const Home = () => {
       socket.on("game-start", (res) => {
         const gameObject=res.gameObject;
         const gameId=res.gameId;
+        const turn=res.turn;
         setGameObject(gameObject);
+        setTurn(turn);
         navigate(`/game/${gameId}`);
       });
     }

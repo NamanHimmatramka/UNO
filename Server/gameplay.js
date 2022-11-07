@@ -44,10 +44,10 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
     userCards.set(cardPlayed, userCards.get(cardPlayed)-1)
   }
   gameObject[userId] = Object.fromEntries(userCards)
+  gameObject["middle"]=cardPlayed;
   games.set(gameId, gameObject)
-
+  console.log(gameObject["middle"]);
   io.to(gameId).emit("update-state", {
-    middle: cardPlayed,
     gameObject: gameObject,
     turn: nextTurn
   })
