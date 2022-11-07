@@ -67,6 +67,7 @@ const Game = (props) => {
       socket.emit("card-played", {
         cardPlayed: item,
         jwt: tokenArray[1],
+        gameId: gameId
       });
     } else {
       setError("Card cannot be played");

@@ -29,7 +29,28 @@ const startGame = (io, gameId, userId1, userId2) => {
   io.to(gameId).emit("game-start", {
     gameObject: newGameObject,
     gameId: gameId,
+    turn: userId1
   });
 };
 
+const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
+  const gameObject = games.get(gameId)
+  console.log(gameObject[userId])
+  const userCards = new Map(Object.entries(gameObject[userId]))
+  if(userCards.get(cardPlayed)-1 == 0){
+    userCards.delete(cardPlayed)
+  }
+  else{
+    userCards.set(cardPlayed, userCards.get(cardPlayed)-1)
+  }
+  gameObject[userId] = Object.fromEntries(userCards)
+  games.set(gameId, gameObject)
+
+  io.to(gameId).emit("update-state", {
+    middle: cardPlayed,
+    gameObject: gameObject,
+    turn: nextTurn
+  })
+}
 module.exports.startGame = startGame;
+module.exports.playCard = playCard;

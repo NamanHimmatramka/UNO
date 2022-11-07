@@ -1,6 +1,7 @@
 const Game = require("../models/game");
 const JWT = require("jsonwebtoken");
-const startGame = require('../gameplay').startGame
+const gameplay = require('../gameplay');
+const game = require("../models/game");
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
@@ -44,7 +45,7 @@ module.exports = (io) => {
               console.log(gameId)
               socket.join(gameId);
               // socket.emit("join-successful",gameId)
-              startGame(io, gameId, game.jwt1, game.jwt2)
+              gameplay.startGame(io, gameId, game.jwt1, game.jwt2)
             });
           } catch (err) {
             socket.emit("error", {msg:err})
@@ -55,5 +56,22 @@ module.exports = (io) => {
         socket.emit("error", {msg:"Incorrect Game ID"})
       });
     });
+
+    socket.on("card-played", (res)=>{
+      const gameId = res.gameId
+      const cardPlayed = res.cardPlayed
+      const jwt = res.jwt
+      console.log(res)
+      Game.findById(gameId).then((game)=>{
+        let nextTurn = null
+        if(game.jwt1 == jwt){
+          nextTurn = game.jwt2
+        }
+        else{
+          nextTurn = game.jwt1
+        }
+        gameplay.playCard(io,gameId,cardPlayed, jwt, nextTurn)
+      })
+    })
   });
 };
