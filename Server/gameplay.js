@@ -1,3 +1,5 @@
+const socket = require("./config/socket");
+
 const games = new Map();
 const shuffledCards = require("./lib/utils").shuffledCards;
 const startGame = (io, gameId, userId1, userId2) => {
@@ -53,7 +55,12 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
   gameObject[userId] = Object.fromEntries(userCards)
   gameObject["middle"]=cardPlayed;
   gameObject.noOfCards[nextTurn]-=1;
-  gameObject.turn = nextTurn
+  if(cardPlayed.startsWith('skip') || cardPlayed.startsWith('_')){
+    gameObject.turn = userId
+  }
+  else{
+    gameObject.turn = nextTurn
+  }
   games.set(gameId, gameObject)
   console.log(gameObject["middle"]);
   io.to(gameId).emit("update-state", {
@@ -87,7 +94,12 @@ const pass = (io,gameId,userId1,userId2)=>{
     gameObject: gameObject,
   })
 }
+
+const sendMessage = (socket,gameId,message)=>{
+  socket.broadcast.to(gameId).emit("receive-message", message)
+}
 module.exports.startGame = startGame;
 module.exports.playCard = playCard;
 module.exports.drawCard = drawCard;
 module.exports.pass = pass;
+module.exports.sendMessage = sendMessage;

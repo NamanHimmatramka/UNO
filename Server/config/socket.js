@@ -25,9 +25,9 @@ module.exports = (io) => {
       }
     });
 
-    socket.on("join-game", (res) => {
-      const jwt=res.jwt;
-      const gameId=res.gameId;
+    socket.on("join-game", (jwt,gameId) => {
+      // const jwt=res.jwt;
+      // const gameId=res.gameId;
       const decodedJwt = JWT.decode(jwt);
       const userId = decodedJwt.sub;
       Game.findById(gameId).then((game) => {
@@ -57,10 +57,10 @@ module.exports = (io) => {
       });
     });
 
-    socket.on("card-played", (res)=>{
-      const gameId = res.gameId
-      const cardPlayed = res.cardPlayed
-      const jwt = res.jwt
+    socket.on("card-played", (jwt,gameId,cardPlayed)=>{
+      // const gameId = res.gameId
+      // const cardPlayed = res.cardPlayed
+      // const jwt = res.jwt
       console.log(res)
       Game.findById(gameId).then((game)=>{
         let nextTurn = null
@@ -74,9 +74,9 @@ module.exports = (io) => {
       })
     })
 
-    socket.on("draw", (res)=>{
-      const gameId = res.gameId
-      const jwt = res.jwt
+    socket.on("draw", (jwt,gameId)=>{
+      // const gameId = res.gameId
+      // const jwt = res.jwt
       Game.findById(gameId).then((game)=>{
         let jwt2 = null
         if(game.jwt1 == jwt){
@@ -89,9 +89,9 @@ module.exports = (io) => {
       })
     })
 
-    socket.on("pass", (res)=>{
-      const gameId = res.gameId
-      const jwt = res.jwt
+    socket.on("pass", (jwt,gameId)=>{
+      // const gameId = res.gameId
+      // const jwt = res.jwt
       Game.findById(gameId).then((game)=>{
         let jwt2 = null
         if(game.jwt1 == jwt){
@@ -102,6 +102,10 @@ module.exports = (io) => {
         }
         gameplay.pass(io,gameId,jwt,jwt2)
       })
+    })
+
+    socket.on("send-message", (jwt, gameId, message)=>{
+      gameplay.sendMessage(socket, gameId, message)
     })
   });
 };
