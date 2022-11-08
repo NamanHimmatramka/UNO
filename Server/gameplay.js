@@ -2,6 +2,7 @@ const socket = require("./config/socket");
 
 const games = new Map();
 const shuffledCards = require("./lib/utils").shuffledCards;
+const shuffledCardsMiddle = require("./lib/utils").shuffledCardsMiddle
 const startGame = (io, gameId, userId1, userId2) => {
   const newMapUser1 = new Map();
   const user1Cards = shuffledCards().splice(0, 7);
@@ -21,7 +22,7 @@ const startGame = (io, gameId, userId1, userId2) => {
       newMapUser2.set(user2Cards[i], 1);
     }
   }
-  const middleCard = shuffledCards().splice(0, 1);
+  const middleCard = shuffledCardsMiddle().splice(0, 1);
   const newGameObject = new Object();
   newGameObject["middle"] = middleCard[0];
   newGameObject[userId1] = Object.fromEntries(newMapUser1);
