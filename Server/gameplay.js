@@ -93,7 +93,13 @@ const playCard = (io, gameId, cardPlayedObj, userId, nextTurn)=>{
   games.set(gameId, gameObject)
   console.log(gameObject["middle"]);
 
-  if(cardPlayed.startsWith('W')){
+  if(gameObject.noOfCards[nextTurn] == 0){
+    io.to(gameId).emit("update-state", {
+      gameObject: gameObject,
+      winner: userId
+    })
+  }
+  else if(cardPlayed.startsWith('W')){
     io.to(gameId).emit("update-state", {
       gameObject: gameObject,
       newColor: cardPlayedObj.newColor
