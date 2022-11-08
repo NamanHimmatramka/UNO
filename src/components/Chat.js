@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useRef } from "react";
 import { AppContext } from "../context/appContext";
 import "./Chat.css";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { useEffect } from "react";
 const Chat = (props) => {
+  const messageEndRef = useRef(null);
   const [message, setMessage] = useState("");
   const socket = useContext(AppContext);
   const [messages, setMessages] = useState([]);
@@ -20,11 +21,12 @@ const Chat = (props) => {
 
   useEffect(() => {
     socket.on("receive-message", (res) => {
-      setMessages((messages)=>{
-        return [...messages, { message: res, sent: false }]
-      })
+      setMessages((messages) => {
+        return [...messages, { message: res, sent: false }];
+      });
     });
-  }, [socket]);
+    scrollToBottom();
+  }, [socket, messages]);
 
   const [isChatBoxHidden, setIsChatBoxHidden] = useState(true);
   const messageSubmitHandler = (event) => {
@@ -35,11 +37,14 @@ const Chat = (props) => {
         gameId: props.gameId,
         message: message,
       });
-      const newMessages=[...messages, { message:  message , sent: true }]
+      const newMessages = [...messages, { message: message, sent: true }];
       setMessages(newMessages);
       setMessage("");
     }
   };
+  function scrollToBottom() {
+    messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }
   return (
     <div className="chat-box">
       <div className="chat-head">
@@ -66,6 +71,7 @@ const Chat = (props) => {
             </div>
           );
         })}
+        <div ref={messageEndRef} />
         <div className="chat-text">
           <input
             type="text"

@@ -55,7 +55,6 @@
   align-items: center;
 }
 
-
 .game .middle-info .card-middle {
   width: 6rem;
   height: 9rem;
@@ -68,9 +67,9 @@
   align-items: center;
   transition: transform 350ms;
 }
-.game .player2deck h1{
-    color: white;
-    margin-left: 1rem;
+.game .player2deck h1 {
+  color: white;
+  margin-left: 1rem;
 }
 .game .player2deck .card-front {
   width: 6rem;
@@ -79,6 +78,32 @@
   transition: transform 350ms;
 }
 .game .player2deck img:hover {
-    transform: scale(1.08);
-    opacity: 1;
-  }
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.colour{
+  border: 1px solid black;
+  border-radius: 10px;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.green{
+  background-color: green;
+}
+.red{
+  background-color: red;
+}
+.blue{
+  background-color: rgba(8, 157, 249, 0.799);
+}
+.yellow{
+  background-color: yellow;
+}

@@ -2,11 +2,9 @@ import "./Home.css";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useEffect, useContext, useRef } from "react";
-import randomCodeGenerator from "../utils/randomCodeGenerator";
 import axios from "axios";
 import GameButton from "../UI/GameButton";
 import { AppContext } from "../context/appContext";
-import Waiting from "./Waiting";
 import Modal from "../UI/Modal";
 import Button from "../UI/Button";
 import { GameContext } from "../context/gameContext";
@@ -33,10 +31,6 @@ const Home = () => {
         navigate("/");
       });
   });
-  const [roomCode, setRoomCode] = useState("");
-  const roomCodeChangeHandler = (event) => {
-    setRoomCode(event.target.value);
-  };
   const createGameHandler = () => {
     let token = localStorage.getItem("token");
     const tokenArray = token.split(" ");
