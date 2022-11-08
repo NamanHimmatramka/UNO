@@ -98,8 +98,33 @@ const pass = (io,gameId,userId1,userId2)=>{
 const sendMessage = (socket,gameId,message)=>{
   socket.broadcast.to(gameId).emit("receive-message", message)
 }
+
+const uno = (socket, gameId)=>{
+  socket.broadcast.to(gameId).emit("uno-called")
+}
+
+const notUno = (io,gameId,userId1, userId2)=>{
+  const gameObject = games.get(gameId)
+  const userCards = new Map(Object.entries(gameObject[userId1]))
+  const newCards = shuffledCards().splice(0,4);
+  for(i=0; i<4; i++){
+    if(userCards.has(newCards[i])){
+      userCards.set(newCards[i], userCards.get(newCards[i]) + 1);
+    }else{
+      userCards.set(newCards[i], 1);
+    }
+  }
+  gameObject[userId1] = Object.fromEntries(userCards)
+  gameObject.noOfCards[userId2]+=4
+  games.set(gameId,gameObject)
+  io.to(gameId).emit("update-state", {
+    gameObject: gameObject,
+  })
+}
 module.exports.startGame = startGame;
 module.exports.playCard = playCard;
 module.exports.drawCard = drawCard;
 module.exports.pass = pass;
 module.exports.sendMessage = sendMessage;
+module.exports.uno = uno;
+module.exports.notUno = notUno;
