@@ -31,11 +31,12 @@ const startGame = (io, gameId, userId1, userId2) => {
 
   newGameObject["noOfCards"] = noOfCards
   console.log(newGameObject);
+
+  newGameObject["turn"] = userId1
   games.set(gameId, newGameObject);
   io.to(gameId).emit("game-start", {
     gameObject: newGameObject,
     gameId: gameId,
-    turn: userId1
   });
 };
 
@@ -52,11 +53,11 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
   gameObject[userId] = Object.fromEntries(userCards)
   gameObject["middle"]=cardPlayed;
   gameObject.noOfCards[nextTurn]-=1;
+  gameObject.turn = nextTurn
   games.set(gameId, gameObject)
   console.log(gameObject["middle"]);
   io.to(gameId).emit("update-state", {
     gameObject: gameObject,
-    turn: nextTurn
   })
 }
 
@@ -71,12 +72,22 @@ const drawCard = (io, gameId, userId1, userId2)=>{
   }
   gameObject[userId1] = Object.fromEntries(userCards)
   gameObject.noOfCards[userId2]+=1
+  gameObject.turn = userId1
   games.set(gameId,gameObject)
   io.to(gameId).emit("update-state", {
     gameObject: gameObject,
-    turn: userId1
+  })
+}
+
+const pass = (io,gameId,userId1,userId2)=>{
+  const gameObject = games.get(gameId)
+  gameObject.turn = userId2
+  games.set(gameId,gameObject)
+  io.to(gameId).emit("update-state", {
+    gameObject: gameObject,
   })
 }
 module.exports.startGame = startGame;
 module.exports.playCard = playCard;
 module.exports.drawCard = drawCard;
+module.exports.pass = pass;
