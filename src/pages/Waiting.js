@@ -11,18 +11,20 @@ import { GameContext } from "../context/gameContext";
 const Waiting = () => {
   const { gameId } = useParams();
   const socket = useContext(AppContext);
-  const { setGameObject } = useContext(GameContext);
-  const {setTurn}=useContext(GameContext);
+  const { setGameObject,setTurn,setToken } = useContext(GameContext);
   console.log(socket);
   const navigate = useNavigate();
   useEffect(() => {
+    let token = localStorage.getItem("token");
+    const tokenArray = token.split(" ");
     socket.on("game-start", (res) => {
       const gameObject = res.gameObject;
       const gameId = res.gameId;
-      const turn=res.turn
-      console.log(gameObject);
+      const turn=res.gameObject.turn
+      const token = tokenArray[1];
       setGameObject(gameObject);
       setTurn(turn);
+      setToken(token);
       navigate(`/game/${gameId}`);
     });
   }, [socket, gameId]);

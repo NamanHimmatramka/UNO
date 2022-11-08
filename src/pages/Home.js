@@ -1,7 +1,7 @@
 import "./Home.css";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import React,{ useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import randomCodeGenerator from "../utils/randomCodeGenerator";
 import axios from "axios";
 import GameButton from "../UI/GameButton";
@@ -15,8 +15,7 @@ const Home = () => {
   const socket = useContext(AppContext);
   const inputGameId = useRef(null);
   const [error, setError] = useState();
-  const {setGameObject}=useContext(GameContext);
-  const {setTurn}=useContext(GameContext);
+  const { setGameObject, setTurn, setToken } = useContext(GameContext);
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -50,11 +49,11 @@ const Home = () => {
     });
   };
   const joinGameHandler = () => {
-    if (inputGameId.current.value==='') {
-      setError('Enter a game code');  
+    let token = localStorage.getItem("token");
+    const tokenArray = token.split(" ");
+    if (inputGameId.current.value === "") {
+      setError("Enter a game code");
     } else {
-      let token = localStorage.getItem("token");
-      const tokenArray = token.split(" ");
       console.log(inputGameId.current.value);
       socket.emit("join-game", {
         gameId: inputGameId.current.value,
@@ -64,30 +63,30 @@ const Home = () => {
         setError(err.msg);
       });
       socket.on("game-start", (res) => {
-        const gameObject=res.gameObject;
-        const gameId=res.gameId;
-        const turn=res.turn;
+        const gameObject = res.gameObject;
+        const gameId = res.gameId;
+        const turn = res.gameObject.turn;
+        const token = tokenArray[1];
         setGameObject(gameObject);
         setTurn(turn);
+        setToken(token);
         navigate(`/game/${gameId}`);
       });
     }
   };
 
-  const errorCancelHandler=()=>{
+  const errorCancelHandler = () => {
     setError();
-    inputGameId.current.value=""
-  }
+    inputGameId.current.value = "";
+  };
   return (
     <React.Fragment>
       <Modal
-      show={error}
-      header={error}
-      onCancel={errorCancelHandler}
-      footer={<Button onClick={errorCancelHandler}>Okay</Button>}
-      >
-
-      </Modal>
+        show={error}
+        header={error}
+        onCancel={errorCancelHandler}
+        footer={<Button onClick={errorCancelHandler}>Okay</Button>}
+      ></Modal>
       <div className="home">
         <img src={logo} alt="" className="logohome" />
         <div className="join-game">

@@ -15,9 +15,10 @@ import { useState } from "react";
 function App() {
   const [gameObject,setGameObject]=useState();
   const [turn,setTurn]=useState(null);
+  const [token,setToken]=useState();
   return (
     <AppContext.Provider value={socket}>
-      <GameContext.Provider value={{gameObject,setGameObject,turn,setTurn}}>
+      <GameContext.Provider value={{gameObject,setGameObject,turn,setTurn,token,setToken}}>
         <BrowserRouter>
           <Routes>
             <Route path="/" exact element={<Login />} />
