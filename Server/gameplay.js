@@ -24,6 +24,12 @@ const startGame = (io, gameId, userId1, userId2) => {
   newGameObject["middle"] = middleCard[0];
   newGameObject[userId1] = Object.fromEntries(newMapUser1);
   newGameObject[userId2] = Object.fromEntries(newMapUser2);
+
+  const noOfCards = new Object()
+  noOfCards[userId1] = 7
+  noOfCards[userId2] = 7
+
+  newGameObject["noOfCards"] = noOfCards
   console.log(newGameObject);
   games.set(gameId, newGameObject);
   io.to(gameId).emit("game-start", {
@@ -45,6 +51,7 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
   }
   gameObject[userId] = Object.fromEntries(userCards)
   gameObject["middle"]=cardPlayed;
+  gameObject.noOfCards[nextTurn]-=1;
   games.set(gameId, gameObject)
   console.log(gameObject["middle"]);
   io.to(gameId).emit("update-state", {
@@ -53,20 +60,21 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
   })
 }
 
-const drawCard = (io, gameId, userId)=>{
+const drawCard = (io, gameId, userId1, userId2)=>{
   const gameObject = games.get(gameId)
-  const userCards = new Map(Object.entries(gameObject[userId]))
+  const userCards = new Map(Object.entries(gameObject[userId1]))
   const newCard = shuffledCards().splice(0, 1);
   if(userCards.has(newCard)){
     userCards.set(newCard, userCards.get(newCard) + 1);
   }else{
     userCards.set(newCard, 1);
   }
-  gameObject[userId] = Object.fromEntries(userCards)
+  gameObject[userId1] = Object.fromEntries(userCards)
+  gameObject.noOfCards[userId2]+=1
   games.set(gameId,gameObject)
   io.to(gameId).emit("update-state", {
     gameObject: gameObject,
-    turn: userId
+    turn: userId1
   })
 }
 module.exports.startGame = startGame;
