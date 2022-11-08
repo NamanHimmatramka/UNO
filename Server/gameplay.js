@@ -56,7 +56,7 @@ const playCard = (io, gameId, cardPlayedObj, userId, nextTurn)=>{
   gameObject[userId] = Object.fromEntries(userCards)
   gameObject["middle"]=cardPlayed;
   gameObject.noOfCards[nextTurn]-=1;
-  if(cardPlayed.startsWith('skip') || cardPlayed.startsWith('_')){
+  if(cardPlayed.startsWith('skip') || cardPlayed.startsWith('_') || cardPlayed.startsWith('D')){
     gameObject.turn = userId
   }
   else{
@@ -93,7 +93,7 @@ const playCard = (io, gameId, cardPlayedObj, userId, nextTurn)=>{
   games.set(gameId, gameObject)
   console.log(gameObject["middle"]);
 
-  if(cardPlayed.startsWith('W') || cardPlayed.startsWith('D4')){
+  if(cardPlayed.startsWith('W')){
     io.to(gameId).emit("update-state", {
       gameObject: gameObject,
       newColor: cardPlayedObj.newColor
