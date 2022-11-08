@@ -42,7 +42,8 @@ const startGame = (io, gameId, userId1, userId2) => {
   });
 };
 
-const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
+const playCard = (io, gameId, cardPlayedObj, userId, nextTurn)=>{
+  const cardPlayed = cardPlayedObj.cardPlayed
   const gameObject = games.get(gameId)
   console.log(gameObject[userId])
   const userCards = new Map(Object.entries(gameObject[userId]))
@@ -61,11 +62,48 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
   else{
     gameObject.turn = nextTurn
   }
+  if(cardPlayed.startsWith('D4')){
+    const userCards2 = new Map(Object.entries(gameObject[nextTurn]))
+    const newCards = shuffledCards().splice(0,4);
+    for (i = 0; i < 4; i++) {
+      if (userCards2.has(newCards[i])) {
+        userCards2.set(newCards[i], userCards2.get(newCards[i]) + 1);
+      } else {
+        userCards2.set(newCards[i], 1);
+      }
+  }
+    gameObject[nextTurn] = Object.fromEntries(userCards2)
+    gameObject.noOfCards[userId] += 4
+  }
+
+  if(cardPlayed.startsWith('D2')){
+    const userCards2 = new Map(Object.entries(gameObject[nextTurn]))
+    const newCards = shuffledCards().splice(0,2);
+    for (i = 0; i < 2; i++) {
+      if (userCards2.has(newCards[i])) {
+        userCards2.set(newCards[i], userCards2.get(newCards[i]) + 1);
+      } else {
+        userCards2.set(newCards[i], 1);
+      }
+  }
+    gameObject[nextTurn] = Object.fromEntries(userCards2)
+    gameObject.noOfCards[userId] += 2
+  }
+
   games.set(gameId, gameObject)
   console.log(gameObject["middle"]);
-  io.to(gameId).emit("update-state", {
-    gameObject: gameObject,
-  })
+
+  if(cardPlayed.startsWith('W') || cardPlayed.startsWith('D4')){
+    io.to(gameId).emit("update-state", {
+      gameObject: gameObject,
+      newColor: cardPlayedObj.newColor
+    })
+  }
+  else{
+    io.to(gameId).emit("update-state", {
+      gameObject: gameObject,
+    })
+  }
 }
 
 const drawCard = (io, gameId, userId1, userId2)=>{
@@ -121,6 +159,8 @@ const notUno = (io,gameId,userId1, userId2)=>{
     gameObject: gameObject,
   })
 }
+
+
 module.exports.startGame = startGame;
 module.exports.playCard = playCard;
 module.exports.drawCard = drawCard;

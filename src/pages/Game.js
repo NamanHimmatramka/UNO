@@ -88,7 +88,9 @@ const Game = (props) => {
         setMiddleCard(item);
         setPlayer1Deck([...player1Deck]);
         socket.emit("card-played", {
-          cardPlayed: item,
+          cardPlayedObj:{
+            cardPlayed: item,
+          },
           jwt: token,
           gameId: gameId,
         });

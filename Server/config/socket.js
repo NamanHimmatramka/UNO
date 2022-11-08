@@ -59,7 +59,7 @@ module.exports = (io) => {
 
     socket.on("card-played", (res)=>{
       const gameId = res.gameId
-      const cardPlayed = res.cardPlayed
+      const cardPlayedObj = res.cardPlayedObj
       const jwt = res.jwt
       console.log(res)
       Game.findById(gameId).then((game)=>{
@@ -70,7 +70,7 @@ module.exports = (io) => {
         else{
           nextTurn = game.jwt1
         }
-        gameplay.playCard(io,gameId,cardPlayed, jwt, nextTurn)
+        gameplay.playCard(io,gameId,cardPlayedObj, jwt, nextTurn)
       })
     })
 
