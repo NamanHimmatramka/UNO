@@ -24,8 +24,7 @@ const Game = (props) => {
   const [isTurn, setIsTurn] = useState(false);
   const [draw, setDraw] = useState(true);
   const [noOfCards, setNoOfCards] = useState(7);
-  const [uno,setUno]=useState(false);
-
+  const [uno, setUno] = useState(false);
   let navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -57,28 +56,28 @@ const Game = (props) => {
       }
     }
     setNoOfCards(gameObject.noOfCards[token]);
-    console.log(noOfCards);
     setPlayer1Deck(temparray);
     socket.on("update-state", (res) => {
       setGameObject(res.gameObject);
       setTurn(res.gameObject.turn);
-      console.log(turn);
+    });
+    socket.on("uno-called", () => {
+      setError("Opponent has called UNO");
+      setErrorAction("Opponent has only 1 card left");
     });
     setMiddleCard(gameObject?.middle);
   }, [gameObject, socket]);
 
   const onCardPlayedHandler = (item) => {
     if (isTurn) {
-      if (cardIsPlayable(item)) 
-      { 
-        if(player1Deck.length===2 && uno){
+      if (cardIsPlayable(item)) {
+        if (player1Deck.length === 2 && uno) {
           socket.emit("uno", {
             jwt: token,
             gameId: gameId,
           });
           setUno(false);
-        }
-        else if(player1Deck.length===2 && !uno){
+        } else if (player1Deck.length === 2 && !uno) {
           socket.emit("not-uno", {
             jwt: token,
             gameId: gameId,
@@ -132,11 +131,17 @@ const Game = (props) => {
   };
 
   const unoHandler = () => {
-    if (player1Deck.length == 2) {
-      setUno(true);
-    } else {
+    if (isTurn) {
+      if (player1Deck.length == 2) {
+        setUno(true);
+      } else {
+        setError("Can't say UNO");
+        setErrorAction("You have more than one card");
+      }
+    }
+    else{
       setError("Can't say UNO");
-      setErrorAction("You have more than one card");
+      setErrorAction("Its not your turn to play");
     }
   };
   const cardIsPlayable = (card) => {
@@ -226,7 +231,7 @@ const Game = (props) => {
             <h1>{isTurn ? "Your Turn" : "Opponent's Turn"}</h1>
           </div>
           <div className="chatBoxWrapper">
-            <Chat />
+            <Chat gameId={gameId} />
           </div>
         </div>
       </div>
