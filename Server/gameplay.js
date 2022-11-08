@@ -52,5 +52,23 @@ const playCard = (io, gameId, cardPlayed, userId, nextTurn)=>{
     turn: nextTurn
   })
 }
+
+const drawCard = (io, gameId, userId)=>{
+  const gameObject = games.get(gameId)
+  const userCards = new Map(Object.entries(gameObject[userId]))
+  const newCard = shuffledCards().splice(0, 1);
+  if(userCards.has(newCard)){
+    userCards.set(newCard, userCards.get(newCard) + 1);
+  }else{
+    userCards.set(newCard, 1);
+  }
+  gameObject[userId] = Object.fromEntries(userCards)
+  games.set(gameId,gameObject)
+  io.to(gameId).emit("update-state", {
+    gameObject: gameObject,
+    turn: userId
+  })
+}
 module.exports.startGame = startGame;
 module.exports.playCard = playCard;
+module.exports.drawCard = drawCard;

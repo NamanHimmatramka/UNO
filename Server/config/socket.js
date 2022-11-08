@@ -73,5 +73,11 @@ module.exports = (io) => {
         gameplay.playCard(io,gameId,cardPlayed, jwt, nextTurn)
       })
     })
+
+    socket.on("draw", (res)=>{
+      const gameId = res.gameId
+      const jwt = res.jwt
+      gameplay.drawCard(io,gameId, jwt)
+    })
   });
 };
