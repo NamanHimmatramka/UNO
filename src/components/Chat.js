@@ -4,7 +4,7 @@ import "./Chat.css";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { useEffect } from "react";
 const Chat = (props) => {
-  const messageEndRef = useRef(null);
+  // const messageEndRef = useRef(null);
   const [message, setMessage] = useState("");
   const socket = useContext(AppContext);
   const [messages, setMessages] = useState([]);
@@ -25,8 +25,8 @@ const Chat = (props) => {
         return [...messages, { message: res, sent: false }];
       });
     });
-    scrollToBottom();
-  }, [socket, messages]);
+    // scrollToBottom();
+  }, [socket]);
 
   const [isChatBoxHidden, setIsChatBoxHidden] = useState(true);
   const messageSubmitHandler = (event) => {
@@ -42,9 +42,9 @@ const Chat = (props) => {
       setMessage("");
     }
   };
-  function scrollToBottom() {
-    messageEndRef.current.scrollIntoView({ behavior: "smooth" });
-  }
+  // function scrollToBottom() {
+  //   messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+  // }
   return (
     <div className="chat-box">
       <div className="chat-head">
@@ -61,6 +61,7 @@ const Chat = (props) => {
       </div>
       <div className="chat-body">
         {messages.map((message, i) => {
+          console.log(messages);
           return message.sent ? (
             <div key={i} className="msg-send">
               {message.message}
@@ -71,7 +72,7 @@ const Chat = (props) => {
             </div>
           );
         })}
-        <div ref={messageEndRef} />
+        {/* <div ref={messageEndRef} /> */}
         <div className="chat-text">
           <input
             type="text"
