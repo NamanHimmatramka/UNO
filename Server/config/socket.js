@@ -1,7 +1,13 @@
 const Game = require("../models/game");
+const GameClass = require("../game")
+const ChatServerClass = require("../ChatServer")
+const packMiddle = require("../lib/packMiddle")
+const packOfCards = require('../lib/packOfCards')
+const games  = new Map()
+const gameplay = new GameClass(games, packOfCards, packMiddle)
+const ChatServer = new ChatServerClass(games)
 const JWT = require("jsonwebtoken");
-const gameplay = require('../gameplay');
-const game = require("../models/game");
+// const gameplay = require('../gameplay');
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
@@ -106,7 +112,7 @@ module.exports = (io) => {
 
     socket.on("uno", (res)=>{
       const gameId = res.gameId
-      gameplay.uno(socket,gameId)
+      gameplay.callUno(socket,gameId)
     })
 
     socket.on("not-uno", (res)=>{
@@ -127,7 +133,7 @@ module.exports = (io) => {
     socket.on("send-message", (res)=>{
       const message = res.message
       const gameId = res.gameId
-      gameplay.sendMessage(socket, gameId, message)
+      ChatServer.broadcastMessage(socket, gameId, message)
     })
   });
 };

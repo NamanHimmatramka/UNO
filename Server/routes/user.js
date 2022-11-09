@@ -1,7 +1,10 @@
 const router = require('express').Router();
 const User = require('../models/user')
 const passport = require('passport')
-const Utils = require('../lib/utils');
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const LoginClass = require("../login")
+const Login = new LoginClass(jwt, bcrypt)
 
 router.get('/protected', passport.authenticate('jwt', {session: false}), (req,res)=>{
     res.json({success: true, msg: "You are a verified user"})
@@ -16,10 +19,10 @@ router.post('/login', (req,res)=>{
         }
         else{
             const hash = user.password
-            Utils.validPassword(hash, req.body.inputs.password.value)
+            Login.checkPassword(hash, req.body.inputs.password.value)
             .then((isValid)=>{
                 if(isValid){
-                    const newToken = Utils.issueJWT(user)
+                    const newToken = Login.issueJWT(user)
                     res.json({success: true, token: newToken.token, expiresIn: newToken.expires})
                 }
                 else{
@@ -38,9 +41,9 @@ router.post('/register', (req, res, next)=>{
             res.json({success: false, msg: "User already registered"})
         }
         else{
-            Utils.createSalt()
+            Login.createSalt()
             .then((salt)=>{
-                Utils.createPassword(req.body.inputs.password.value, salt)
+                Login.createPassword(req.body.inputs.password.value, salt)
                 .then((hashedPassword)=>{
                     const newUser = new User({
                         name: req.body.inputs.name.value,

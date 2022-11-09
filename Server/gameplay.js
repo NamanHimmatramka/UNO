@@ -1,5 +1,3 @@
-const socket = require("./config/socket");
-
 const games = new Map();
 const shuffledCards = require("./lib/utils").shuffledCards;
 const shuffledCardsMiddle = require("./lib/utils").shuffledCardsMiddle
