@@ -29,3 +29,5 @@ app.get('/protected', passport.authenticate('jwt', {session:false}),(req,res)=>{
 httpServer.listen(port, ()=>{
     console.log('Server listening on port '+port)
 })
+
+module.exports = httpServer

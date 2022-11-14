@@ -29,7 +29,7 @@ class Game {
 
     startGame(io, gameId, userId1, userId2){
         const newMapUser1 = new Map();
-        const user1Cards = this.shuffledCards().splice(0, 7);
+        const user1Cards = ["1Y","5R","D4W","W","3R","9G","0B"];
         for (var i = 0; i < 7; i++) {
           if (newMapUser1.has(user1Cards[i])) {
             newMapUser1.set(user1Cards[i], newMapUser1.get(user1Cards[i]) + 1);
@@ -38,7 +38,7 @@ class Game {
           }
         }
         const newMapUser2 = new Map();
-        const user2Cards = this.shuffledCards().splice(0, 7);
+        const user2Cards = ["8Y","3R","D4W","W","7R","4G","5B"];
         for (var i = 0; i < 7; i++) {
           if (newMapUser2.has(user2Cards[i])) {
             newMapUser2.set(user2Cards[i], newMapUser2.get(user2Cards[i]) + 1);
@@ -57,7 +57,7 @@ class Game {
         noOfCards[userId2] = 7
       
         newGameObject["noOfCards"] = noOfCards
-        console.log(newGameObject);
+        // console.log(newGameObject);
       
         newGameObject["turn"] = userId1
         this.games.set(gameId, newGameObject);
@@ -70,7 +70,7 @@ class Game {
       playCard(io, gameId, cardPlayedObj, userId, nextTurn){
         const cardPlayed = cardPlayedObj.cardPlayed
         const gameObject = this.games.get(gameId)
-        console.log(gameObject[userId])
+        // console.log(gameObject[userId])
         const userCards = new Map(Object.entries(gameObject[userId]))
         if(userCards.get(cardPlayed)-1 == 0){
           userCards.delete(cardPlayed)
@@ -116,7 +116,7 @@ class Game {
         }
       
         this.games.set(gameId, gameObject)
-        console.log(gameObject["middle"]);
+        // console.log(gameObject["middle"]);
       
         if(gameObject.noOfCards[nextTurn] == 0){
           io.to(gameId).emit("update-state", {

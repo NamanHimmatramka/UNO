@@ -11,7 +11,7 @@ const JWT = require("jsonwebtoken");
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
-    console.log("socket connected");
+    // console.log("socket connected");
 
     socket.on("create-game", (jwt) => {
       const decodedJwt = JWT.decode(jwt);
@@ -22,12 +22,13 @@ module.exports = (io) => {
       });
       try {
         newGame.save().then((game) => {
+          // console.log("New Game Created")
           socket.emit("gameId", game._id);
-          console.log(game._id.toString())
+          // console.log(game._id.toString())
           socket.join(game._id.toString());
         });
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     });
 
@@ -48,7 +49,7 @@ module.exports = (io) => {
           game.jwt2 = jwt
           try {
             game.save().then((game) => {
-              console.log(gameId)
+              // console.log(gameId)
               socket.join(gameId);
               // socket.emit("join-successful",gameId)
               gameplay.startGame(io, gameId, game.jwt1, game.jwt2)
@@ -67,7 +68,7 @@ module.exports = (io) => {
       const gameId = res.gameId
       const cardPlayedObj = res.cardPlayedObj
       const jwt = res.jwt
-      console.log(res)
+      // console.log(res)
       Game.findById(gameId).then((game)=>{
         let nextTurn = null
         if(game.jwt1 == jwt){
