@@ -19,7 +19,9 @@ import Button from "../UI/Button";
 import { ImagePicker } from "react-file-picker";
 const Profile = () => {
   let navigate = useNavigate();
-  let user
+  let user;
+  const [countryCode,setCountryCode]=useState();
+  const [countryflag,setCountryFlag]=useState();
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
@@ -30,23 +32,34 @@ const Profile = () => {
       })
       .then((res) => {
         console.log(res);
-        axios.get("http://localhost:3001/profile/user", {
-          headers:{
-            Authorization: token,
-          }
-        })
-        .then((res)=>{
-          console.log(res.data)
-        })
-        .catch((err)=>{
-          console.log(err)
-        })
+        axios
+          .get("http://localhost:3001/profile/user", {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then((res) => {
+            console.log(res.data.country);
+            setCountryCode(res.data.country);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
         navigate("/");
       });
   });
+  useEffect(()=>{
+    axios.get(`https://countryflagsapi.com/png/IN`).then((res)=>{
+      setCountryFlag(res.config.url);
+    })
+  },[])
+  const showPosition = (position) => {
+    console.log("hello");
+    console.log(position.coords.latitude);
+  };
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const openModal = () => {
@@ -56,8 +69,8 @@ const Profile = () => {
     setShowModal(false);
   };
   const confirmLogout = () => {
-    localStorage.clear()
-    navigate('/')
+    localStorage.clear();
+    navigate("/");
   };
   const updateProfileHandler = () => {
     setUpdateModal(true);
@@ -133,7 +146,7 @@ const Profile = () => {
             <div className="profile-info">
               <h1 className="name">Parth Gujarathi</h1>
               <h2 className="rank">Amateur</h2>
-              <img className="flag" src={India} alt="" />
+              <img className="flag" src={countryflag} alt="" />
             </div>
           </div>
           <div className="icons">
