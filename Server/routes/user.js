@@ -3,6 +3,7 @@ const User = require('../models/user')
 const passport = require('passport')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const LoginClass = require("../login")
 const Login = new LoginClass(jwt, bcrypt)
 
@@ -22,8 +23,13 @@ router.post('/login', (req,res)=>{
             Login.checkPassword(hash, req.body.inputs.password.value)
             .then((isValid)=>{
                 if(isValid){
-                    const newToken = Login.issueJWT(user)
-                    res.json({success: true, token: newToken.token, expiresIn: newToken.expires})
+                    if(user.isVerified){
+                        const newToken = Login.issueJWT(user)
+                        res.json({success: true, token: newToken.token, expiresIn: newToken.expires})
+                    }
+                    else{
+                        res.json({success: false, msg:"User Not Verified"})
+                    }
                 }
                 else{
                     res.json({success: false, msg: "Incorrect Password"})
@@ -54,6 +60,7 @@ router.post('/register', (req, res, next)=>{
                     try{
                         newUser.save()
                         .then((user)=>{
+                            Login.sendVerificationMail(user.userName, nodemailer)
                             res.json({success:true, msg: "user Saved"})
                         })
                     }
@@ -63,6 +70,24 @@ router.post('/register', (req, res, next)=>{
                 })
             })
         }
+    })
+})
+
+router.get('/verify/:confirmationCode', (req,res)=>{
+    const decodedToken = jwt.decode(req.params.confirmationCode, {complete: true})
+    const userName = decodedToken.payload.sub
+    User.findOne({userName: userName})
+    .then((user)=>{
+        if(!user){
+            res.json({success: false, msg:"User not found"})
+        }
+        user.isVerified = true;
+        user.save((err)=>{
+            if(err){
+                res.json({success: false, msg: err})
+            }
+        })
+        res.json({success: true})
     })
 })
 

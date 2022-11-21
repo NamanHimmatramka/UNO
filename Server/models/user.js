@@ -9,13 +9,16 @@ const userSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
+    isVerified:{
+        type: Boolean,
+        default: false
+    },
     password:{
         type: String,
         required: true
     },
     country:{
         type: String,
-        required: true
     },
     noOfGames:{
         type: Number,

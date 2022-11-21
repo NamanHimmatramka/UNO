@@ -39,7 +39,7 @@ module.exports = (io) => {
       const userId = decodedJwt.sub;
       Game.findById(gameId).then((game) => {
         if (!game) {
-          socket.emit("error", {msg:"Incorrect Game ID"})
+          socket.emit("error", {msg:"Incorrect ID"})
         } 
         else if (game.userId2 != null) {
           socket.emit("error", {msg:"Game Full"})
