@@ -18,7 +18,7 @@ jobs:
       - name: Install necessary packages
         run: npm install
       - name: Testing the project
-        run: npm run test
+        run: cd Server && npm run test
       - name: Build the project
         run: npm run build
       - name: Publish
