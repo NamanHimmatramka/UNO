@@ -3,7 +3,7 @@ var expect = chai.expect
 var io = require("socket.io-client")
 var chaiHttp = require('chai-http');
 var server = require('../app');
-var socketUrl = 'http://localhost:3001';
+var socketUrl = 'https://arcane-badlands-93459.herokuapp.com';
 var options = {  
   transports: ['websocket'],
   'force new connection': true
