@@ -31,7 +31,7 @@ const Game = (props) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:3001/protected", {
+      .get("https://arcane-badlands-93459.herokuapp.com/protected", {
         headers: {
           Authorization: token,
         },

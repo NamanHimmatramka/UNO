@@ -16,7 +16,7 @@ export default function () {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("http://localhost:3001/protected", {
+      .get("https://arcane-badlands-93459.herokuapp.com/protected", {
         headers: {
           Authorization: token,
         },
@@ -42,7 +42,7 @@ export default function () {
     console.log("Submit");
     console.log(formState);
     axios
-      .post("http://localhost:3001/user/login", formState)
+      .post("https://arcane-badlands-93459.herokuapp.com/user/login", formState)
       .then((res) => {
         console.log("Submitted");
         console.log(res);

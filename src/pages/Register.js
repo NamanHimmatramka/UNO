@@ -51,7 +51,7 @@ export default function () {
     console.log("Submit");
     console.log(formState);
     axios
-      .post("http://localhost:3001/user/register", formState)
+      .post("https://arcane-badlands-93459.herokuapp.com/user/register", formState)
       .then((res) => {
         console.log("Submitted");
         console.log(res);
