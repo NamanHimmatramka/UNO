@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "mocha --timeout 100000",
-    "start": "nodemon app.js"
+    "nodemon": "nodemon app.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
