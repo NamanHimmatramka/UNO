@@ -74,6 +74,7 @@ router.post('/register', (req, res, next)=>{
 })
 
 router.get('/verify/:confirmationCode', (req,res)=>{
+    console.log("Hello")
     const decodedToken = jwt.decode(req.params.confirmationCode, {complete: true})
     const userName = decodedToken.payload.sub
     User.findOne({userName: userName})
