@@ -22,6 +22,10 @@ const Profile = () => {
   let user;
   const [countryCode,setCountryCode]=useState();
   const [countryflag,setCountryFlag]=useState();
+  const [name,setName]=useState();
+  const [noOfGames,setNoOfGames]=useState(0);
+  const [wins,setWins]=useState(0);
+  const [winPercent,setWinPercent]=useState();
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
@@ -41,6 +45,10 @@ const Profile = () => {
           .then((res) => {
             console.log(res.data.country);
             setCountryCode(res.data.country);
+            setName(res.data.name)
+            setNoOfGames(res.data.noOfGames);
+            setWins(res.data.wins);
+            calWinPercentage(res.data.wins,res.data.noOfGames)
           })
           .catch((err) => {
             console.log(err);
@@ -51,15 +59,22 @@ const Profile = () => {
         navigate("/");
       });
   });
+  const calWinPercentage=(wins,noOfGames)=>{
+    if(noOfGames==0){
+      setWinPercent(0);
+    }
+    else{
+      let percent=(wins)*100/(noOfGames);
+      const percent2=percent.toFixed(2)
+      setWinPercent(percent2);
+    }
+  }
   useEffect(()=>{
-    axios.get(`https://countryflagsapi.com/png/IN`).then((res)=>{
+    console.log(countryCode); 
+    axios.get(`https://countryflagsapi.com/png/${countryCode}`).then((res)=>{
       setCountryFlag(res.config.url);
     })
-  },[])
-  const showPosition = (position) => {
-    console.log("hello");
-    console.log(position.coords.latitude);
-  };
+  },[countryCode])
   const [showModal, setShowModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const openModal = () => {
@@ -144,7 +159,7 @@ const Profile = () => {
               onClick={updateProfileHandler}
             ></img>
             <div className="profile-info">
-              <h1 className="name">Parth Gujarathi</h1>
+              <h1 className="name">{name}</h1>
               <h2 className="rank">Amateur</h2>
               <img className="flag" src={countryflag} alt="" />
             </div>
@@ -167,11 +182,11 @@ const Profile = () => {
           />
           <div className="games-info">
             <h3>Games Played</h3>
-            <h3>16</h3>
+            <h3>{noOfGames}</h3>
             <h3>Wins</h3>
-            <h3>10</h3>
+            <h3>{wins}</h3>
             <h3>Win Percentage</h3>
-            <h3>62.5%</h3>
+            <h3>{winPercent}</h3>
           </div>
           <div className="game-history">
             <h2>Game History</h2>
