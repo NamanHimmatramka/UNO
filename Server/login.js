@@ -33,6 +33,38 @@ class Login{
         const hashedPassword = await this.bcrypt.hash(password,salt)
         return hashedPassword
     }
+
+    issueJWTVerification(email){
+        const expiresIn = '1D'
+        const payload = {
+            sub: email,
+            iat: Date.now()
+        }
+        const signedToken = this.jwt.sign(payload, process.env.SECRET_KEY, {expiresIn: expiresIn})
+        return {
+            token:signedToken,
+            expires: expiresIn
+        }
+    }
+    sendVerificationMail(email, nodemailer){
+        const transport = nodemailer.createTransport({
+            service: "gmail",
+            auth:{
+                user: process.env.EMAIL_USER,
+                pass: process.env.PASSWORD
+            }
+        })
+        const confirmationCode = this.issueJWTVerification(email).token
+        transport.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: "Please Verify Your Email",
+            html:`<h1>Email Confirmation</h1>
+            <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
+            <a href=http://localhost:8000/user/verify/${confirmationCode}> Click here</a>
+            </div>`
+        })
+    }
 }
 
 module.exports = Login
