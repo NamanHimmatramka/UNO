@@ -61,7 +61,7 @@ class Login{
             subject: "Please Verify Your Email",
             html:`<h1>Email Confirmation</h1>
             <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-            <a href=http://localhost:3001/user/verify/${confirmationCode}> Click here</a>
+            <a href=https://arcane-badlands-93459.herokuapp.com/user/verify/${confirmationCode}> Click here</a>
             </div>`
         })
     }
