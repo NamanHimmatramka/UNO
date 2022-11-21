@@ -19,12 +19,6 @@ jobs:
         run: npm install
       - name: Testing the project
         run: cd Server && npm install && npm run test
-      - name: Build the project
-        run: npm run build
-      - name: Publish
-        uses: netlify/actions/cli@master
-        with:
-          args: deploy --dir=out
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -32,4 +26,9 @@ jobs:
           DB_URL: "mongodb+srv://himmatramka2003:naman123@cluster0.z4alohf.mongodb.net/test"
           SECRET_KEY: "test-secret"
           EMAIL_USER: naman.himmatramka@spit.ac.in
-          PASSWORD: himmatramka123
+      - name: Build the project
+        run: npm run build
+      - name: Publish
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=out
