@@ -27,7 +27,7 @@ jobs:
           SECRET_KEY: "test-secret"
           EMAIL_USER: naman.himmatramka@spit.ac.in
       - name: Build the project
-        run: npm run build
+        run: CI=false npm run build
       - name: Publish
         uses: netlify/actions/cli@master
         with:
