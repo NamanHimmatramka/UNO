@@ -79,7 +79,7 @@ const Home = () => {
         show={error}
         header={error}
         onCancel={errorCancelHandler}
-        footer={<Button onClick={errorCancelHandler}>Okay</Button>}
+        footer={<Button onClick={errorCancelHandler}>Okayyy</Button>}
       ></Modal>
       <div className="home">
         <img src={logo} alt="" className="logohome" />
