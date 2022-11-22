@@ -1,6 +1,7 @@
 var chai = require('chai');
 var expect = chai.expect
 var io = require("socket.io-client")
+var mocha = require('mocha')
 var chaiHttp = require('chai-http');
 var server = require('../app');
 var socketUrl = 'https://arcane-badlands-93459.herokuapp.com';
