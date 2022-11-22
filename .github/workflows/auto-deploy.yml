@@ -28,3 +28,4 @@ jobs:
           EMAIL_USER: naman.himmatramka@spit.ac.in
       - name: Build the project
         run: CI=false npm run build
+        
