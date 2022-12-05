@@ -29,7 +29,7 @@ const Profile = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios
-      .get("https://arcane-badlands-93459.herokuapp.com/protected", {
+      .get("https://uno-server.onrender.com/protected", {
         headers: {
           Authorization: token,
         },
@@ -37,7 +37,7 @@ const Profile = () => {
       .then((res) => {
         console.log(res);
         axios
-          .get("https://arcane-badlands-93459.herokuapp.com/profile/user", {
+          .get("https://uno-server.onrender.com/profile/user", {
             headers: {
               Authorization: token,
             },

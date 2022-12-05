@@ -10,14 +10,14 @@ const Leaderboard = () => {
     console.log('IN')
     const token = localStorage.getItem("token");
     axios
-      .get("https://arcane-badlands-93459.herokuapp.com/protected", {
+      .get("https://uno-server.onrender.com/protected", {
         headers: {
           Authorization: token,
         },
       })
       .then((res) => {
         console.log(res);
-        axios.get("https://arcane-badlands-93459.herokuapp.com/leaderboard/", {
+        axios.get("https://uno-server.onrender.com/leaderboard/", {
           headers:{
             Authorization: token,
           }

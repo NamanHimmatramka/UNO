@@ -4,7 +4,7 @@ var io = require("socket.io-client")
 var mocha = require('mocha')
 var chaiHttp = require('chai-http');
 var server = require('../app');
-var socketUrl = 'https://arcane-badlands-93459.herokuapp.com';
+var socketUrl = 'https://uno-server.onrender.com';
 var options = {  
   transports: ['websocket'],
   'force new connection': true
